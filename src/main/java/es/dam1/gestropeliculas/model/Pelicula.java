@@ -1,81 +1,28 @@
 package es.dam1.gestropeliculas.model;
 
-public class Pelicula {
-    private int ID;
-    private String titulo;
-    private String director;
-    private Estado estado;
-    private int anyoEstreno;
-    private String genero;
-    private String sinopsis;
+public class Pelicula extends Contenido{
+    private double duracion;
 
-    public Pelicula(String nombre, String director, int anyoEstreno, String genero, String sinopsis, int ID) {
-        this.titulo = nombre;
-        this.director = director;
-        this.anyoEstreno = anyoEstreno;
-        this.genero = genero;
-        this.sinopsis = sinopsis;
-        this.ID = ID;
+    public Pelicula(int ID, String titulo, String director, Estado estado, int anyoEstreno, Genero genero, String sinopsis, double duracion) {
+        super(ID, titulo, director, estado, anyoEstreno, genero, sinopsis);
+        this.duracion = duracion;
+    }
+    public Pelicula() {
+        super();
     }
 
-    public String getTitulo() {
-        return titulo;
+    public double getDuracion() {
+        return duracion;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setDuracion(double duracion) {
+        this.duracion = duracion;
     }
 
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
-    public int getAnyoEstreno() {
-        return anyoEstreno;
-    }
-
-    public void setAnyoEstreno(int anyoEstreno) {
-        this.anyoEstreno = anyoEstreno;
-    }
-
-    public String getGenero() {
-        return genero;
-    }
-
-    public void setGenero(String genero) {
-        this.genero = genero;
-    }
-
-    public String getSinopsis() {
-        return sinopsis;
-    }
-
-    public void setSinopsis(String sinopsis) {
-        this.sinopsis = sinopsis;
-    }
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 
     @Override
     public String toString() {
-        return "Pelicula{" +
-                "ID='" + ID + '\'' +
-                ", titulo='" + titulo + '\'' +
-                ", director='" + director + '\'' +
-                ", estado='" + estado + '\'' +
-                ", anyoEstreno=" + anyoEstreno +
-                ", genero='" + genero + '\'' +
-                ", sinopsis='" + sinopsis + '\'' +
-                '}';
+        return super.toString() + ", duracion=" + duracion;
     }
+
 }

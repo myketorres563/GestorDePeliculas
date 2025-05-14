@@ -6,8 +6,22 @@ public class Contenido {
     private String director;
     private Estado estado;
     private int anyoEstreno;
-    private String genero;
+    private Genero genero;
     private String sinopsis;
+
+    public Contenido(int ID, String titulo, String director, Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
+        this.ID = ID;
+        this.titulo = titulo;
+        this.director = director;
+        this.estado = estado;
+        this.anyoEstreno = anyoEstreno;
+        this.genero = genero;
+        this.sinopsis = sinopsis;
+    }
+
+    public Contenido() {
+
+    }
 
     public int getID() {
         return ID;
@@ -49,11 +63,11 @@ public class Contenido {
         this.anyoEstreno = anyoEstreno;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Genero genero) {
         this.genero = genero;
     }
 

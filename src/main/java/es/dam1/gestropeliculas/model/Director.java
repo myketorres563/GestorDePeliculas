@@ -3,14 +3,12 @@ package es.dam1.gestropeliculas.model;
 public class Director {
     private int ID;
     private String nombre;
-    private String apellidos;
     private int edad;
     private String nacionalidad;
 
     // Constructor
-    public Director(String nombre, String apellidos, int edad, String nacionalidad, int ID) {
+    public Director(String nombre, int edad, String nacionalidad, int ID) {
         this.nombre = nombre;
-        this.apellidos = apellidos;
         this.edad = edad;
         this.nacionalidad = nacionalidad;
         this.ID = ID;
@@ -25,13 +23,6 @@ public class Director {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
 
     public int getEdad() {
         return edad;
@@ -63,7 +54,6 @@ public class Director {
     public String toString() {
         return "Director{" +
                 "nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
                 ", edad=" + edad +
                 ", nacionalidad='" + nacionalidad + '\'' +
                 ", ID=" + ID ;

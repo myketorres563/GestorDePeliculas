@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class ConnectionDB {
-    private static final Logger logger = Logger.getLogger(ConnectionDB.class.getName());
+public class ConnectionBD {
+    private static final Logger logger = Logger.getLogger(ConnectionBD.class.getName());
     private final static String FILE = "connection.xml";
     private static volatile Connection con;
-    private static volatile ConnectionDB _instance;
+    private static volatile ConnectionBD _instance;
 
-    private ConnectionDB() {
+    private ConnectionBD() {
         try {
             ConnectionProperties properties = XMLManager.readXML(new ConnectionProperties(), FILE);
             con = DriverManager.getConnection(
@@ -27,9 +27,9 @@ public class ConnectionDB {
 
     public static Connection getConnection() {
         if (_instance == null) {
-            synchronized (ConnectionDB.class) {
+            synchronized (ConnectionBD.class) {
                 if (_instance == null) {
-                    _instance = new ConnectionDB();
+                    _instance = new ConnectionBD();
                 }
             }
         }

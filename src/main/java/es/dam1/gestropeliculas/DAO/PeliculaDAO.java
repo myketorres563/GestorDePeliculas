@@ -1,5 +1,9 @@
 package es.dam1.gestropeliculas.DAO;
 
+import es.dam1.gestropeliculas.baseDeDatos.ConnectionBD;
+import es.dam1.gestropeliculas.model.Genero;
+import es.dam1.gestropeliculas.model.Pelicula;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,45 +13,23 @@ import java.util.List;
 
 public class PeliculaDAO {
 
-    private Connection connection;
+    private final static String SQL_ALL = "SELECT * FROM pelicula";
+    private final static String SQL_INSERT = "INSERT INTO pelicula (id, titulo, director, anyo_estreno, genero, sinopsis) VALUES (?, ?, ?, ?, ?, ?)";
+    private final static String SQL_UPDATE = "UPDATE pelicula SET titulo = ?, director = ?, anyo_estreno = ?, genero = ?, sinopsis = ? WHERE id = ?";
+    private final static String SQL_DELETE = "DELETE FROM pelicula WHERE id = ?";
 
-    public PeliculaDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public boolean crearPelicula(int id, String titulo, String genero) {
-        String sql = "INSERT INTO peliculas (id, titulo, genero) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            statement.setString(2, titulo);
-            statement.setString(3, genero);
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean eliminarPelicula(int id) {
-        String sql = "DELETE FROM peliculas WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            return statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public List<String> obtenerTodasLasPeliculas() {
-        String sql = "SELECT * FROM peliculas";
-        List<String> peliculas = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                String pelicula = "ID: " + resultSet.getInt("id") +
-                        ", Título: " + resultSet.getString("titulo") +
-                        ", Género: " + resultSet.getString("genero");
+    public static List<Pelicula> findAll() {
+        List<Pelicula> peliculas = new ArrayList<>();
+        try (PreparedStatement stmt = ConnectionBD.getConnection().prepareStatement(SQL_ALL);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Pelicula pelicula = new Pelicula();
+                pelicula.setID(rs.getInt("id"));
+                pelicula.setTitulo(rs.getString("titulo"));
+                pelicula.setDirector(rs.getString("director"));
+                pelicula.setAnyoEstreno(rs.getInt("anyo_estreno"));
+                pelicula.setGenero(Genero.valueOf(rs.getString("genero")));
+                pelicula.setSinopsis(rs.getString("sinopsis"));
                 peliculas.add(pelicula);
             }
         } catch (SQLException e) {
@@ -55,4 +37,6 @@ public class PeliculaDAO {
         }
         return peliculas;
     }
+
+
 }
