@@ -1,12 +1,12 @@
 package es.dam1.gestropeliculas.view;
 
-import es.dam1.gestropeliculas.controler.Controller;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
-public class pantallaInicialController{
+import java.io.IOException;
 
+public class pantallaInicialController {
 
     @FXML
     private Button botonRegistrar;
@@ -14,9 +14,13 @@ public class pantallaInicialController{
     @FXML
     private Button botonIniciarSesion;
 
-    @Override
+    @FXML
+    public void botonRegistrar(ActionEvent actionEvent) throws IOException {
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaRegistro.fxml", "Registro");
+    }
 
-
-
-
+    @FXML
+    public void botonIniciarSesion(ActionEvent actionEvent) throws IOException {
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaInicio.fxml", "Iniciar Sesión");
+    }
 }
