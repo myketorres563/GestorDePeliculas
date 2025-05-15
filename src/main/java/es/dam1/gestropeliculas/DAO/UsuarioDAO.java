@@ -16,6 +16,8 @@ public class UsuarioDAO {
     private static final String SQL_DELETE = "DELETE FROM usuario WHERE Usuario = ?";
     private static final String SQL_SELECT = "SELECT * FROM usuario";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM usuario WHERE Usuario = ?";
+    private static final String SQL_VALIDAR_CREDENCIALES = "SELECT * FROM usuario WHERE Usuario = ? AND Contraseña = ?";
+
 
     /**
      * Método que inserta un nuevo usuario en la base de datos.
@@ -121,4 +123,29 @@ public class UsuarioDAO {
         }
         return usuario;
     }
+
+
+
+    /**
+     * Método que valida si un usuario con esa contraseña existe en la base de datos.
+     * @param usuario nombre del usuario
+     * @param contrasenia contraseña del usuario
+     * @return true si las credenciales son válidas, false en caso contrario
+     */
+    public static boolean validarCredenciales(String usuario, String contrasenia) {
+        boolean valido = false;
+        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_VALIDAR_CREDENCIALES)) {
+            pst.setString(1, usuario);
+            pst.setString(2, contrasenia);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    valido = true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return valido;
+    }
+
 }
