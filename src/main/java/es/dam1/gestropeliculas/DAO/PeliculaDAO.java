@@ -13,9 +13,10 @@ import java.util.List;
 
 public class PeliculaDAO {
 
+
     private final static String SQL_ALL = "SELECT * FROM pelicula";
     private final static String SQL_INSERT = "INSERT INTO pelicula (IDContenido, titulo, director, anyo_estreno, genero, sinopsis) VALUES (?, ?, ?, ?, ?, ?)";
-    private final static String SQL_UPDATE = "UPDATE pelicula SET titulo = ?, director = ?, anyoestreno = ?, genero = ?, sinopsis = ? WHERE IDContenido = ?";
+    private final static String SQL_UPDATE = "UPDATE pelicula SET titulo = ?, director = ?, anyo_estreno = ?, genero = ?, sinopsis = ? WHERE IDContenido = ?";
     private final static String SQL_DELETE = "DELETE FROM pelicula WHERE IDContenido = ?";
 
     public static List<Pelicula> findAll() {
@@ -39,55 +40,23 @@ public class PeliculaDAO {
     }
 
     public static Pelicula insertPelicula(Pelicula pelicula) {
-        Connection conn = null;
-        try {
-            conn = ConnectionBD.getConnection();
-            conn.setAutoCommit(false); // para hacer transacción
-
-            // Insertar en contenido
-            String sqlContenido = "INSERT INTO contenido (IDContenido, titulo, director, estado, anyoEstreno, genero, sinopsis) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstContenido = conn.prepareStatement(sqlContenido)) {
-                pstContenido.setInt(1, pelicula.getID());
-                pstContenido.setString(2, pelicula.getTitulo());
-                pstContenido.setString(3, pelicula.getDirector());
-                pstContenido.setString(4, pelicula.getEstado().name());
-                pstContenido.setInt(5, pelicula.getAnyoEstreno());
-                pstContenido.setString(6, pelicula.getGenero().name());
-                pstContenido.setString(7, pelicula.getSinopsis());
-                pstContenido.executeUpdate();
+        if (pelicula != null) {
+            try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_INSERT)) {
+                pst.setInt(1, pelicula.getID()); // Aquí también cambia a IDContenido
+                pst.setString(2, pelicula.getTitulo());
+                pst.setString(3, pelicula.getDirector());
+                pst.setInt(4, pelicula.getAnyoEstreno());
+                pst.setString(5, pelicula.getGenero().name());
+                pst.setString(6, pelicula.getSinopsis());
+                pst.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-
-            // Insertar en pelicula
-            String sqlPelicula = "INSERT INTO pelicula (IDContenido, duracion) VALUES (?, ?)";
-            try (PreparedStatement pstPelicula = conn.prepareStatement(sqlPelicula)) {
-                pstPelicula.setInt(1, pelicula.getID());
-                pstPelicula.setDouble(2, pelicula.getDuracion());
-                pstPelicula.executeUpdate();
-            }
-
-            conn.commit();
-        } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            throw new RuntimeException(e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        } else {
+            pelicula = null;
         }
         return pelicula;
     }
-
 
     public static boolean updatePelicula(Pelicula pelicula) {
         boolean result = false;
@@ -121,4 +90,5 @@ public class PeliculaDAO {
         }
         return deleted;
     }
+
 }
