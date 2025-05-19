@@ -12,8 +12,11 @@
             <Image url="@../../../../images/d.png" />
          </image>
       </ImageView>
-      <Button layoutX="61.0" layoutY="200.0" mnemonicParsing="false" text="Peliculas" />
-      <Button layoutX="265.0" layoutY="200.0" mnemonicParsing="false" text="Directores" />
-      <Button layoutX="484.0" layoutY="200.0" mnemonicParsing="false" text="Series" />
+      <Button layoutX="59.0" layoutY="161.0" mnemonicParsing="false" text="Lista Peliculas" />
+      <Button layoutX="251.0" layoutY="161.0" mnemonicParsing="false" text="Lista Directores" />
+      <Button layoutX="443.0" layoutY="161.0" mnemonicParsing="false" text="Lista Series" />
+      <Button layoutX="57.0" layoutY="212.0" mnemonicParsing="false" text="Añadr Pelicula" />
+      <Button layoutX="246.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Directores" />
+      <Button layoutX="437.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Series" />
    </children>
 </AnchorPane>
