@@ -51,39 +51,7 @@ public class ContenidoDAO {
         return contenido;
     }
 
-    /**
-     *
-     * Devuelve una lista con todos los contenidos almacenados.
-     *
-     * @return Lista de objetos Contenido.
-     */
-    public static List<Contenido> findAll() {
-        List<Contenido> lista = new ArrayList<>();
-        try (
-                Connection conn = ConnectionBD.getConnection();
-                PreparedStatement pst = conn.prepareStatement(SQL_ALL);
-                ResultSet rs = pst.executeQuery()
-        ) {
-            while (rs.next()) {
-                Director director = DirectorDAO.findById(rs.getInt("director"));
-                Usuario usuario  = UsuarioDAO.findById(rs.getString("usuario"));
 
-                Contenido c = new Contenido();
-                c.setID(rs.getInt("IDContenido"));
-                c.setUsuario(usuario);
-                c.setDirector(director);
-                c.setTitulo(rs.getString("titulo"));
-                c.setEstado(Estado.valueOf(rs.getString("estado")));
-                c.setAnyoEstreno(rs.getInt("anyoEstreno"));
-                c.setGenero(Genero.valueOf(rs.getString("genero")));
-                c.setSinopsis(rs.getString("sinopsis"));
-                lista.add(c);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener todos los contenidos", e);
-        }
-        return lista;
-    }
 
     /**
      *

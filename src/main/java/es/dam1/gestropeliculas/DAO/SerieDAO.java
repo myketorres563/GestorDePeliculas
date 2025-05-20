@@ -1,4 +1,3 @@
-// src/main/java/es/dam1/gestropeliculas/DAO/SerieDAO.java
 package es.dam1.gestropeliculas.DAO;
 
 import es.dam1.gestropeliculas.baseDeDatos.ConnectionBD;
@@ -15,7 +14,12 @@ public class SerieDAO {
     private static final String SQL_DELETE  = "DELETE FROM series WHERE IDContenido = ?";
     private static final String SQL_SELECT  = "SELECT * FROM series";
 
-    /** Devuelve todas las series */
+    /**
+     *
+     * Devuelve todas las series existentes en la base de datos.
+     *
+     * @return Lista de objetos Series.
+     */
     public static List<Series> findAll() {
         List<Series> lista = new ArrayList<>();
         try (
@@ -35,7 +39,13 @@ public class SerieDAO {
         return lista;
     }
 
-    /** Inserta una nueva serie */
+    /**
+     *
+     * Inserta una nueva serie en la base de datos (requiere que el contenido ya exista).
+     *
+     * @param serie Objeto Series a insertar.
+     * @return La serie insertada, o null si no se pudo insertar.
+     */
     public static Series insertSerie(Series serie) {
         if (serie == null) return null;
         try (
@@ -51,7 +61,13 @@ public class SerieDAO {
         }
     }
 
-    /** Actualiza una serie existente */
+    /**
+     *
+     * Actualiza una serie existente en la base de datos.
+     *
+     * @param serie Objeto Series con los datos actualizados.
+     * @return true si se actualizó correctamente, false en caso contrario.
+     */
     public static boolean updateSerie(Series serie) {
         if (serie == null) return false;
         try (
@@ -66,7 +82,13 @@ public class SerieDAO {
         }
     }
 
-    /** Elimina una serie por IDContenido */
+    /**
+     *
+     * Elimina una serie de la base de datos por su IDContenido.
+     *
+     * @param idContenido ID del contenido asociado a la serie.
+     * @return true si la serie se eliminó correctamente, false en caso contrario.
+     */
     public static boolean deleteSerie(int idContenido) {
         try (
                 Connection conn = ConnectionBD.getConnection();

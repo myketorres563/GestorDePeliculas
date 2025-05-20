@@ -19,32 +19,40 @@ public class pantallaPeliculasAñadirController {
     @FXML private ComboBox<Director> comboDirector;
     @FXML private ComboBox<Estado> comboEstado;
     @FXML private TextField txtAnyoEstreno;
-    @FXML private ComboBox<Genero> comboGenero;     // ← aquí
+    @FXML private ComboBox<Genero> comboGenero;
     @FXML private TextArea txtSinopsis;
     @FXML private TextField txtDuracion;
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
 
+    /**
+     *
+     * Inicializa los ComboBox con los valores de la base de datos y enums.
+     *
+     */
     @FXML
     public void initialize() {
         comboDirector.setItems(FXCollections.observableArrayList(DirectorDAO.findAll()));
         comboEstado.setItems(FXCollections.observableArrayList(Estado.values()));
-        comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));  // ← y aquí
+        comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));
     }
 
+    /**
+     *
+     * Acción para guardar una nueva película. Realiza validaciones e inserta los datos en la base de datos.
+     *
+     */
     @FXML
     private void accionGuardar() {
         try {
-            // Recogida de datos
             String titulo     = txtTitulo.getText();
             Director director = comboDirector.getValue();
             Estado estado     = comboEstado.getValue();
             int anyo          = Integer.parseInt(txtAnyoEstreno.getText());
-            Genero genero     = comboGenero.getValue();                  // ← usar ComboBox
+            Genero genero     = comboGenero.getValue();
             String sinopsis   = txtSinopsis.getText();
             int duracion      = Integer.parseInt(txtDuracion.getText());
 
-            // Inserción en contenido
             Contenido nuevoContenido = new Contenido(0, null, director, titulo, estado, anyo, genero, sinopsis);
             int idGenerado = ContenidoDAO.insertContenido(nuevoContenido);
             if (idGenerado <= 0) {
@@ -52,7 +60,6 @@ public class pantallaPeliculasAñadirController {
             }
             nuevoContenido.setID(idGenerado);
 
-            // Inserción en película
             Pelicula nuevaPelicula = new Pelicula(nuevoContenido, duracion);
             PeliculaDAO.insertPelicula(nuevaPelicula);
 
@@ -63,16 +70,34 @@ public class pantallaPeliculasAñadirController {
         }
     }
 
+    /**
+     *
+     * Acción para cerrar la ventana actual.
+     *
+     */
     @FXML
     private void accionAtras() {
         cerrarVentana();
     }
 
+    /**
+     *
+     * Cierra la ventana actual.
+     *
+     */
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     *
+     * Muestra una alerta en pantalla.
+     *
+     * @param titulo  Título de la alerta.
+     * @param mensaje Mensaje de la alerta.
+     * @param tipo    Tipo de alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

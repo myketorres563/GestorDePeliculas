@@ -26,9 +26,13 @@ public class pantallaPeliculasController {
     @FXML private Button btnEliminar;
     @FXML private Button btnAnadir;
 
+    /**
+     *
+     * Inicializa la tabla de películas y carga los datos desde la base de datos.
+     *
+     */
     @FXML
     private void initialize() {
-        // Configura las columnas
         colTitulo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitulo()));
         colDirector.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDirector().getNombre()));
         colEstado.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEstado().toString()));
@@ -37,24 +41,32 @@ public class pantallaPeliculasController {
         colSinopsis.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getSinopsis()));
         colDuracion.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getDuracion()).asObject());
 
-        // Carga los datos
         tablaPeliculas.setItems(FXCollections.observableArrayList(PeliculaDAO.findAll()));
     }
 
+    /**
+     *
+     * Acción para volver a la pantalla principal.
+     *
+     * @throws IOException Si ocurre un error al abrir la nueva ventana.
+     */
     @FXML
     private void accionAtras() throws IOException {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPrincipal.fxml", "Menú Principal");
     }
 
+    /**
+     *
+     * Acción para eliminar la película seleccionada de la tabla y de la base de datos.
+     *
+     */
     @FXML
     private void accionEliminar() {
         Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
         if (seleccionada != null) {
             if (PeliculaDAO.deletePelicula(seleccionada.getID())) {
-                tablaPeliculas.getItems().remove(seleccionada); // refleja el cambio
+                tablaPeliculas.getItems().remove(seleccionada);
             }
         }
     }
-
-
 }

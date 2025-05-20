@@ -10,9 +10,14 @@ import java.io.IOException;
 public class pantallaInicioSesionController {
 
     @FXML private TextField usuarioInicio;
-
     @FXML private TextField contraseniaInicio;
 
+    /**
+     *
+     * Inicia sesión validando las credenciales del usuario y abre la pantalla principal si son correctas.
+     *
+     * @param actionEvent Evento de acción del botón iniciar sesión.
+     */
     public void iniciarSesion(ActionEvent actionEvent) {
         String nombreUsuario = usuarioInicio.getText().trim();
         String contraseñaUsuario = contraseniaInicio.getText().trim();
@@ -34,10 +39,14 @@ public class pantallaInicioSesionController {
         }
     }
 
-
+    /**
+     *
+     * Cancela el inicio de sesión y vuelve a la pantalla inicial.
+     *
+     * @param actionEvent Evento de acción del botón cancelar.
+     * @throws IOException Si ocurre un error al abrir la ventana.
+     */
     public void cancelarInicio(ActionEvent actionEvent) throws IOException {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaInicial.fxml", "Gestor de Peliculas");
     }
-
-
 }

@@ -7,39 +7,47 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 public class XMLManager {
-    public static <T> boolean writeXML(T objeto, String fileName){
+
+    /**
+     *
+     * Escribe un objeto en un archivo XML utilizando JAXB.
+     *
+     * @param objeto   Objeto a serializar.
+     * @param fileName Nombre del archivo XML de destino.
+     * @return true si la operación se realizó correctamente, false en caso contrario.
+     */
+    public static <T> boolean writeXML(T objeto, String fileName) {
         boolean result = false;
-
-        try{
-            //Paso 1:Crear el contexto  de JaxB para la clase que queremos serializar
+        try {
             JAXBContext context = JAXBContext.newInstance(objeto.getClass());
-
-            //Paso 2: Proceso Marshalling: convertir objeto en XML
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-            marshaller.marshal(objeto,new File(fileName));
+            marshaller.marshal(objeto, new File(fileName));
             result = true;
-        }catch (JAXBException e) {
+        } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
         return result;
     }
 
-
-    public static <T> T readXML (T objeto, String fileName){
+    /**
+     *
+     * Lee un archivo XML y lo convierte en un objeto utilizando JAXB.
+     *
+     * @param objeto   Objeto de referencia para la clase a deserializar.
+     * @param fileName Nombre del archivo XML origen.
+     * @return Objeto deserializado a partir del XML.
+     */
+    public static <T> T readXML(T objeto, String fileName) {
         T objetos = null;
-        try{
-            //Paso 1:Crear el contexto  de JaxB para la clase que queremos serializar
+        try {
             JAXBContext context = JAXBContext.newInstance(objeto.getClass());
-            //Paso 2: Unmarshalling: leer el XML y convertirlo a un objeto
             Unmarshaller unmarshaller = context.createUnmarshaller();
             objetos = (T) unmarshaller.unmarshal(new File(fileName));
-
-        }catch (JAXBException e) {
+        } catch (JAXBException e) {
             throw new RuntimeException(e);
         }
         return objetos;
     }
-
 }
