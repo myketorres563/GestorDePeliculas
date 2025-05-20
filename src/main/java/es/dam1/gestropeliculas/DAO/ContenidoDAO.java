@@ -1,4 +1,3 @@
-// src/main/java/es/dam1/gestropeliculas/DAO/ContenidoDAO.java
 package es.dam1.gestropeliculas.DAO;
 
 import es.dam1.gestropeliculas.baseDeDatos.ConnectionBD;
@@ -11,16 +10,18 @@ import java.util.List;
 public class ContenidoDAO {
 
     private static final String SQL_ALL         = "SELECT * FROM contenido";
-    private static final String INSERT_SQL      =
-            "INSERT INTO contenido (usuario, director, titulo, estado, anyoEstreno, genero, sinopsis) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_SQL      =
-            "UPDATE contenido SET usuario = ?, director = ?, titulo = ?, estado = ?, anyoEstreno = ?, genero = ?, sinopsis = ? " +
-                    "WHERE IDContenido = ?";
+    private static final String INSERT_SQL      = "INSERT INTO contenido (usuario, director, titulo, estado, anyoEstreno, genero, sinopsis) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_SQL      = "UPDATE contenido SET usuario = ?, director = ?, titulo = ?, estado = ?, anyoEstreno = ?, genero = ?, sinopsis = ? WHERE IDContenido = ?";
     private static final String DELETE_SQL      = "DELETE FROM contenido WHERE IDContenido = ?";
     private static final String FIND_BY_ID_SQL  = "SELECT * FROM contenido WHERE IDContenido = ?";
 
-    /** Busca un contenido por ID */
+    /**
+     *
+     * Busca un contenido por su ID.
+     *
+     * @param id ID del contenido a buscar.
+     * @return Objeto Contenido si existe, null si no existe.
+     */
     public static Contenido findById(int id) {
         Contenido contenido = null;
         try (
@@ -50,7 +51,12 @@ public class ContenidoDAO {
         return contenido;
     }
 
-    /** Devuelve todos los contenidos */
+    /**
+     *
+     * Devuelve una lista con todos los contenidos almacenados.
+     *
+     * @return Lista de objetos Contenido.
+     */
     public static List<Contenido> findAll() {
         List<Contenido> lista = new ArrayList<>();
         try (
@@ -79,7 +85,13 @@ public class ContenidoDAO {
         return lista;
     }
 
-    /** Inserta un nuevo contenido y devuelve su ID generado */
+    /**
+     *
+     * Inserta un nuevo contenido en la base de datos.
+     *
+     * @param contenido Objeto Contenido a insertar.
+     * @return ID generado para el nuevo contenido, -1 si falla.
+     */
     public static int insertContenido(Contenido contenido) {
         int idGenerado = -1;
         try (
@@ -106,7 +118,13 @@ public class ContenidoDAO {
         return idGenerado;
     }
 
-    /** Actualiza un contenido existente */
+    /**
+     *
+     * Actualiza un contenido existente en la base de datos.
+     *
+     * @param contenido Objeto Contenido con los datos actualizados.
+     * @return true si se actualizó correctamente, false en caso contrario.
+     */
     public static boolean updateContenido(Contenido contenido) {
         try (
                 Connection conn = ConnectionBD.getConnection();
@@ -126,7 +144,13 @@ public class ContenidoDAO {
         }
     }
 
-    /** Elimina un contenido por ID */
+    /**
+     *
+     * Elimina un contenido por su ID.
+     *
+     * @param idContenido ID del contenido a eliminar.
+     * @return true si se eliminó correctamente, false en caso contrario.
+     */
     public static boolean deleteContenido(int idContenido) {
         try (
                 Connection conn = ConnectionBD.getConnection();

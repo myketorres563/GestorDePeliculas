@@ -14,6 +14,11 @@ public class pantallaDirectoresAñadirController {
     @FXML private Button btnAtras;
     @FXML private Button btnAnadir;
 
+    /**
+     *
+     * Acción para añadir un nuevo director a la base de datos tras validar los datos introducidos.
+     *
+     */
     @FXML
     private void accionAnadir() {
         try {
@@ -35,16 +40,34 @@ public class pantallaDirectoresAñadirController {
         }
     }
 
+    /**
+     *
+     * Acción para cerrar la ventana actual.
+     *
+     */
     @FXML
     private void accionAtras() {
         cerrarVentana();
     }
 
+    /**
+     *
+     * Cierra la ventana actual.
+     *
+     */
     private void cerrarVentana() {
         Stage stage = (Stage) btnAtras.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     *
+     * Muestra una alerta en pantalla.
+     *
+     * @param titulo  Título de la alerta.
+     * @param mensaje Mensaje a mostrar.
+     * @param tipo    Tipo de alerta.
+     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

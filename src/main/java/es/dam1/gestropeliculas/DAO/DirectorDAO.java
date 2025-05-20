@@ -18,7 +18,12 @@ public class DirectorDAO {
     private static final String SQL_DELETE = "DELETE FROM director WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM director";
 
-
+    /**
+     *
+     * Obtiene la lista de todos los directores de la base de datos.
+     *
+     * @return Lista de objetos Director.
+     */
     public static List<Director> findAll() {
         List<Director> directores = new ArrayList<>();
 
@@ -42,8 +47,13 @@ public class DirectorDAO {
         return directores;
     }
 
-
-
+    /**
+     *
+     * Inserta un nuevo director en la base de datos.
+     *
+     * @param director Objeto Director a insertar.
+     * @return true si se insertó correctamente, false en caso contrario.
+     */
     public static boolean insertDirector(Director director) {
         boolean insertado = false;
 
@@ -61,8 +71,13 @@ public class DirectorDAO {
         return insertado;
     }
 
-
-
+    /**
+     *
+     * Actualiza los datos de un director en la base de datos.
+     *
+     * @param director Objeto Director con los datos actualizados.
+     * @return true si se actualizó correctamente, false en caso contrario.
+     */
     public static boolean updateDirector(Director director) {
         boolean result = false;
         if (director != null) {
@@ -80,6 +95,13 @@ public class DirectorDAO {
         return result;
     }
 
+    /**
+     *
+     * Elimina un director de la base de datos por su ID.
+     *
+     * @param id ID del director a eliminar.
+     * @return true si se eliminó correctamente, false en caso contrario.
+     */
     public static boolean deleteDirector(int id) {
         boolean eliminado = false;
 
@@ -94,10 +116,13 @@ public class DirectorDAO {
         return eliminado;
     }
 
-
-
-
-
+    /**
+     *
+     * Busca un director por su ID en la base de datos.
+     *
+     * @param id ID del director a buscar.
+     * @return Objeto Director si existe, null si no existe.
+     */
     public static Director findById(int id) {
         Director director = null;
 
@@ -119,8 +144,4 @@ public class DirectorDAO {
 
         return director;
     }
-
-
-
-
 }
