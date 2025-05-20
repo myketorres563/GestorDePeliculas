@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.dam1.gestropeliculas.view.pantallaPrincipalController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.dam1.gestropeliculas.view.pantallaPrincipalController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
          <image>
             <Image url="@../../../../images/d.png" />
          </image>
       </ImageView>
-      <Button layoutX="59.0" layoutY="161.0" mnemonicParsing="false" text="Lista Peliculas" onAction="#abrirListaPeliculas"/>
-      <Button layoutX="251.0" layoutY="161.0" mnemonicParsing="false" text="Lista Directores" onAction="#abrirListaDirectores"/>
-      <Button layoutX="443.0" layoutY="161.0" mnemonicParsing="false" text="Lista Series" onAction="#abrirListaSeries"/>
-      <Button layoutX="57.0" layoutY="212.0" mnemonicParsing="false" text="Añadr Pelicula" onAction="#abrirFormularioPelicula"/>
-      <Button layoutX="246.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Directores" onAction="#abrirFormularioDirector"/>
-      <Button layoutX="437.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Series" onAction="#abrirFormularioSerie"/>
+      <Button layoutX="59.0" layoutY="161.0" mnemonicParsing="false" onAction="#abrirListaPeliculas" text="Lista Películas" />
+      <Button layoutX="251.0" layoutY="161.0" mnemonicParsing="false" onAction="#abrirListaDirectores" text="Lista Directores" />
+      <Button layoutX="443.0" layoutY="161.0" mnemonicParsing="false" onAction="#abrirListaSeries" text="Lista Series" />
+      <Button layoutX="57.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioPelicula" text="Añadir Películas" />
+      <Button layoutX="246.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioDirector" text="Añadir Directores" />
+      <Button layoutX="437.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioSerie" text="Añadir Series" />
    </children>
 </AnchorPane>
