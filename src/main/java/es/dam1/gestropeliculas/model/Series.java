@@ -1,11 +1,16 @@
 package es.dam1.gestropeliculas.model;
 
-public class Series extends Contenido{
+public class Series extends Contenido {
     private int temporadas;
 
-    public Series(int ID, String titulo, String director, Estado estado, int anyoEstreno, Genero genero, String sinopsis, int temporadas) {
-        super(ID, titulo, director, estado, anyoEstreno, genero, sinopsis);
+    // Constructor que usa Usuario y Director como en Contenido
+    public Series(Contenido contenido, int temporadas) {
+        super(contenido); // Esto requiere que Contenido tenga un constructor copia
         this.temporadas = temporadas;
+    }
+
+
+    public Series() {
     }
 
     public int getTemporadas() {
@@ -20,5 +25,4 @@ public class Series extends Contenido{
     public String toString() {
         return super.toString() + ", temporadas=" + temporadas;
     }
-
 }

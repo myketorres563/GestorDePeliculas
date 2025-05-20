@@ -7,7 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import java.io.IOException;
 
-public class pantallaInicioController {
+public class pantallaInicioSesionController {
 
     @FXML private TextField usuarioInicio;
 

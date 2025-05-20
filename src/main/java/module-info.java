@@ -5,12 +5,14 @@ module es.dam1.gestropeliculas {
     requires java.xml.bind;
     requires java.desktop;
 
-    // Para permitir acceso reflexivo desde FXML
+    // Acceso reflexivo para JavaFX
     opens es.dam1.gestropeliculas to javafx.fxml;
     opens es.dam1.gestropeliculas.view to javafx.fxml;
+    opens es.dam1.gestropeliculas.model to javafx.base; // ← ESTA ES LA CLAVE
     opens es.dam1.gestropeliculas.baseDeDatos to java.xml.bind;
 
-    // Para exportar los paquetes
+    // Exportaciones
     exports es.dam1.gestropeliculas;
     exports es.dam1.gestropeliculas.view;
+    exports es.dam1.gestropeliculas.test;
 }

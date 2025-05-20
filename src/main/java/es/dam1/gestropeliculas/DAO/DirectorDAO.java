@@ -12,20 +12,19 @@ import java.util.List;
 
 public class DirectorDAO {
 
-    private final static String SQL_ALL = "SELECT * FROM director";
-    private final static String SQL_INSERT = "INSERT INTO director (id, nombre, edad, nacionalidad) VALUES (?, ?, ?, ?)";
-    private final static String SQL_UPDATE = "UPDATE director SET nombre = ?, edad = ?, nacionalidad = ? WHERE id = ?";
-    private final static String SQL_DELETE = "DELETE FROM director WHERE id = ?";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM director WHERE ID = ?";
+    private static final String SQL_INSERT = "INSERT INTO director (nombre, edad, nacionalidad) VALUES (?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE director SET nombre = ?, edad = ?, nacionalidad = ? WHERE id = ?";
+    private static final String SQL_DELETE = "DELETE FROM director WHERE id = ?";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM director";
 
-    /**
-     * Método que devuelve la lista de todos los directores de la base de datos.
-     * @return lista de directores.
-     */
+
     public static List<Director> findAll() {
         List<Director> directores = new ArrayList<>();
-        Connection con = ConnectionBD.getConnection();
-        try (PreparedStatement stmt = con.prepareStatement(SQL_ALL);
-             ResultSet rs = stmt.executeQuery()) {
+
+        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_SELECT_ALL);
+             ResultSet rs = pst.executeQuery()) {
+
             while (rs.next()) {
                 Director director = new Director(
                         rs.getString("nombre"),
@@ -35,39 +34,35 @@ public class DirectorDAO {
                 );
                 directores.add(director);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return directores;
     }
 
-    /**
-     * Método que inserta un director en la base de datos.
-     * @param director objeto de tipo Director con los datos a insertar.
-     * @return el director insertado o null si no se pudo insertar.
-     */
-    public static Director insertDirector(Director director) {
-        if (director != null) {
-            try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_INSERT)) {
-                pst.setInt(1, director.getID());
-                pst.setString(2, director.getNombre());
-                pst.setInt(3, director.getEdad());
-                pst.setString(4, director.getNacionalidad());
-                pst.executeUpdate();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            director = null;
+
+
+    public static boolean insertDirector(Director director) {
+        boolean insertado = false;
+
+        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_INSERT)) {
+            pst.setString(1, director.getNombre());
+            pst.setInt(2, director.getEdad());
+            pst.setString(3, director.getNacionalidad());
+
+            insertado = pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return director;
+
+        return insertado;
     }
 
-    /**
-     * Método que actualiza los datos de un director en la base de datos.
-     * @param director objeto de tipo Director con los datos actualizados.
-     * @return true si se actualizó correctamente, false en caso contrario.
-     */
+
+
     public static boolean updateDirector(Director director) {
         boolean result = false;
         if (director != null) {
@@ -85,22 +80,47 @@ public class DirectorDAO {
         return result;
     }
 
-    /**
-     * Método que elimina un director de la base de datos por su ID.
-     * @param director objeto de tipo Director con el ID del director a eliminar.
-     * @return true si se eliminó correctamente, false en caso contrario.
-     */
-    public static boolean deleteDirector(Director director) {
-        boolean deleted = false;
-        if (director != null) {
-            try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_DELETE)) {
-                pst.setInt(1, director.getID());
-                pst.executeUpdate();
-                deleted = true;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+    public static boolean deleteDirector(int id) {
+        boolean eliminado = false;
+
+        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_DELETE)) {
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            eliminado = true;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return deleted;
+
+        return eliminado;
     }
+
+
+
+
+
+    public static Director findById(int id) {
+        Director director = null;
+
+        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_FIND_BY_ID)) {
+            pst.setInt(1, id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    director = new Director(
+                            rs.getString("nombre"),
+                            rs.getInt("edad"),
+                            rs.getString("nacionalidad"),
+                            rs.getInt("ID")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return director;
+    }
+
+
+
+
 }

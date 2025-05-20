@@ -8,23 +8,34 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.dam1.gestropeliculas.view.pantallaDirectoresAñadirController">
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.dam1.gestropeliculas.view.pantallaDirectoresAñadirController">
    <children>
+
+      <!-- Fondo -->
       <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../images/Red%20Black%20Modern%20Bold%20Cinema%20Club%20Presentation%20(1).png" />
+            <Image url="@../../../../images/Red%20Black%20Modern%20Bold%20Cinema%20Club%20Presentation%20(1).png"/>
          </image>
       </ImageView>
+
+      <!-- Título -->
       <Text layoutX="167.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Añadir Director">
          <font>
-            <Font name="Arial" size="40.0" />
+            <Font name="Arial" size="40.0"/>
          </font>
       </Text>
-      <TextField layoutX="215.0" layoutY="112.0" promptText="Nombre" />
-      <TextField layoutX="216.0" layoutY="188.0" promptText="Edad" />
-      <TextField layoutX="215.0" layoutY="258.0" promptText="Nacionalidad" />
-      <Button layoutX="216.0" layoutY="314.0" mnemonicParsing="false" text="Atras" />
-      <Button layoutX="314.0" layoutY="314.0" mnemonicParsing="false" text="Añadir" />
+
+      <!-- Campos de entrada -->
+      <TextField fx:id="txtNombre" layoutX="215.0" layoutY="112.0" promptText="Nombre"/>
+      <TextField fx:id="txtEdad" layoutX="216.0" layoutY="188.0" promptText="Edad"/>
+      <TextField fx:id="txtNacionalidad" layoutX="215.0" layoutY="258.0" promptText="Nacionalidad"/>
+
+      <!-- Botones -->
+      <Button fx:id="btnAtras" layoutX="216.0" layoutY="314.0" mnemonicParsing="false" text="Atras" onAction="#accionAtras"/>
+      <Button fx:id="btnAnadir" layoutX="314.0" layoutY="314.0" mnemonicParsing="false" text="Añadir" onAction="#accionAnadir"/>
+
    </children>
+
 </AnchorPane>

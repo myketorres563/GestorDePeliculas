@@ -21,6 +21,6 @@ public class pantallaInicialController {
 
     @FXML
     public void botonIniciarSesion(ActionEvent actionEvent) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaInicio.fxml", "Iniciar Sesión");
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaInicioSesion.fxml", "Iniciar Sesión");
     }
 }

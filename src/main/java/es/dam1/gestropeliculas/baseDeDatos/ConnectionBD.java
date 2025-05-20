@@ -25,15 +25,13 @@ public class ConnectionBD {
         }
     }
 
-    public static Connection getConnection() {
-        if (_instance == null) {
-            synchronized (ConnectionBD.class) {
-                if (_instance == null) {
-                    _instance = new ConnectionBD();
-                }
-            }
-        }
-        return con;
+    public static Connection getConnection() throws SQLException {
+        ConnectionProperties props = XMLManager.readXML(new ConnectionProperties(), FILE);
+        return DriverManager.getConnection(
+                props.getUrl(),
+                props.getUser(),
+                props.getPassword()
+        );
     }
 
     public static void closeConnection() {

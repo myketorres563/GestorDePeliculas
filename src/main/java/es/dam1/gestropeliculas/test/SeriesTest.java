@@ -1,17 +1,15 @@
 package es.dam1.gestropeliculas.test;
 
 import es.dam1.gestropeliculas.DAO.ContenidoDAO;
-import es.dam1.gestropeliculas.DAO.PeliculaDAO;
 import es.dam1.gestropeliculas.DAO.DirectorDAO;
+import es.dam1.gestropeliculas.DAO.SerieDAO;
 import es.dam1.gestropeliculas.DAO.UsuarioDAO;
 import es.dam1.gestropeliculas.model.*;
 
-public class PeliculaTest {
+public class SeriesTest {
     public static void main(String[] args) {
-        // Obtener un usuario existente
+        // Obtener el usuario y director ya existentes en la base de datos
         Usuario usuario = UsuarioDAO.findById("miguel");
-
-        // Obtener un director existente
         Director director = DirectorDAO.findById(1);
 
         if (usuario == null || director == null) {
@@ -19,29 +17,29 @@ public class PeliculaTest {
             return;
         }
 
-        // Crear y rellenar el contenido
+        // Crear contenido base usando setters
         Contenido temp = new Contenido();
-        temp.setID(1001); // Asegúrate de que este ID no esté ya en la BBDD
+        temp.setID(3001); // IDContenido único
         temp.setUsuario(usuario);
         temp.setDirector(director);
-        temp.setTitulo("Matrix");
-        temp.setEstado(Estado.NO_VISTA);
-        temp.setAnyoEstreno(1999);
-        temp.setGenero(Genero.ACCION);
-        temp.setSinopsis("Un hacker descubre la verdad sobre su mundo.");
+        temp.setTitulo("Stranger Things");
+        temp.setEstado(Estado.EN_PROCESO);
+        temp.setAnyoEstreno(2016);
+        temp.setGenero(Genero.FANTASIA);
+        temp.setSinopsis("Niños enfrentan sucesos paranormales.");
 
         // Usar constructor de copia
         Contenido contenido = new Contenido(temp);
 
-        // Insertar el contenido
+        // Insertar el contenido en la base de datos
         ContenidoDAO.insertContenido(contenido);
 
-        // Crear la película asociada con ese contenido
-        Pelicula pelicula = new Pelicula(contenido, 136.5); // duración en minutos
+        // Crear la serie con el contenido ya insertado
+        Series serie = new Series(contenido, 4); // 4 temporadas
 
-        // Insertar la película
-        PeliculaDAO.insertPelicula(pelicula);
+        // Insertar en tabla series
+        SerieDAO.insertSerie(serie);
 
-        System.out.println("Película insertada correctamente.");
+        System.out.println("Serie insertada correctamente.");
     }
 }

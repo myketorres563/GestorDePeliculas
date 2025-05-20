@@ -1,23 +1,40 @@
 package es.dam1.gestropeliculas.model;
 
 public class Contenido {
+    private Usuario usuario;
     private int ID;
     private String titulo;
-    private String director;
+    private Director director;
     private Estado estado;
     private int anyoEstreno;
     private Genero genero;
     private String sinopsis;
 
-    public Contenido(int ID, String titulo, String director, Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
+    public Contenido(int ID, Usuario usuario, Director director, String titulo,
+                     Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
         this.ID = ID;
-        this.titulo = titulo;
+        this.usuario = usuario;
         this.director = director;
+        this.titulo = titulo;
         this.estado = estado;
         this.anyoEstreno = anyoEstreno;
         this.genero = genero;
         this.sinopsis = sinopsis;
     }
+    public Contenido(Contenido otro) {
+        this.ID = otro.ID;
+        this.usuario = otro.usuario;
+        this.director = otro.director;
+        this.titulo = otro.titulo;
+        this.estado = otro.estado;
+        this.anyoEstreno = otro.anyoEstreno;
+        this.genero = otro.genero;
+        this.sinopsis = otro.sinopsis;
+    }
+
+
+
+
 
     public Contenido() {
 
@@ -39,11 +56,11 @@ public class Contenido {
         this.titulo = titulo;
     }
 
-    public String getDirector() {
+    public Director getDirector() {
         return director;
     }
 
-    public void setDirector(String director) {
+    public void setDirector(Director director) {
         this.director = director;
     }
 
@@ -79,15 +96,23 @@ public class Contenido {
         this.sinopsis = sinopsis;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
         return "Contenido{" +
-                "ID=" + ID +
+                "usuario=" + usuario +
+                ", ID=" + ID +
                 ", titulo='" + titulo + '\'' +
-                ", director='" + director + '\'' +
+                ", director=" + director +
                 ", estado=" + estado +
                 ", anyoEstreno=" + anyoEstreno +
-                ", genero='" + genero + '\'' +
+                ", genero=" + genero +
                 ", sinopsis='" + sinopsis + '\'' +
                 '}';
     }

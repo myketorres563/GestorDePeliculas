@@ -12,11 +12,11 @@
             <Image url="@../../../../images/d.png" />
          </image>
       </ImageView>
-      <Button layoutX="59.0" layoutY="161.0" mnemonicParsing="false" text="Lista Peliculas" />
-      <Button layoutX="251.0" layoutY="161.0" mnemonicParsing="false" text="Lista Directores" />
-      <Button layoutX="443.0" layoutY="161.0" mnemonicParsing="false" text="Lista Series" />
-      <Button layoutX="57.0" layoutY="212.0" mnemonicParsing="false" text="Añadr Pelicula" />
-      <Button layoutX="246.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Directores" />
-      <Button layoutX="437.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Series" />
+      <Button layoutX="59.0" layoutY="161.0" mnemonicParsing="false" text="Lista Peliculas" onAction="#abrirListaPeliculas"/>
+      <Button layoutX="251.0" layoutY="161.0" mnemonicParsing="false" text="Lista Directores" onAction="#abrirListaDirectores"/>
+      <Button layoutX="443.0" layoutY="161.0" mnemonicParsing="false" text="Lista Series" onAction="#abrirListaSeries"/>
+      <Button layoutX="57.0" layoutY="212.0" mnemonicParsing="false" text="Añadr Pelicula" onAction="#abrirFormularioPelicula"/>
+      <Button layoutX="246.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Directores" onAction="#abrirFormularioDirector"/>
+      <Button layoutX="437.0" layoutY="212.0" mnemonicParsing="false" text="Añadir Series" onAction="#abrirFormularioSerie"/>
    </children>
 </AnchorPane>

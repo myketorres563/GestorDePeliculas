@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.dam1.gestropeliculas.view.pantallaInicioController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.dam1.gestropeliculas.view.pantallaInicioSesionController">
     <children>
         <ImageView fx:id="GuardarRegistro" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
             <image>

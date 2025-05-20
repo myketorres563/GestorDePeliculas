@@ -2,20 +2,20 @@ package es.dam1.gestropeliculas.model;
 
 public class Usuario {
     private String usuario;
-    private String contrasenia;
+    private int contrasenia;
     private String email;
 
-    public Usuario(String usuario, String email, String contrasenia) {
+    public Usuario(String usuario, String email, int contrasenia) {
         this.usuario = usuario;
         this.email = email;
         this.contrasenia = contrasenia;
     }
 
-    public String getContrasenia() {
+    public int getContrasenia() {
         return contrasenia;
     }
 
-    public void setContrasenia(String contrasenia) {
+    public void setContrasenia(int contrasenia) {
         this.contrasenia = contrasenia;
     }
 
