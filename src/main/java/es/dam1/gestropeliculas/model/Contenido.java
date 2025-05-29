@@ -1,16 +1,37 @@
 package es.dam1.gestropeliculas.model;
 
+import java.util.List;
+
 public class Contenido {
     private Usuario usuario;
     private int ID;
     private String titulo;
-    private Director director;
+    private String director;
     private Estado estado;
     private int anyoEstreno;
     private Genero genero;
     private String sinopsis;
 
-    public Contenido(int ID, Usuario usuario, Director director, String titulo,
+
+    List<Usuario> usuarios;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public Contenido(int ID, Usuario usuario, String director, String titulo,
                      Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
         this.ID = ID;
         this.usuario = usuario;
@@ -32,10 +53,6 @@ public class Contenido {
         this.sinopsis = otro.sinopsis;
     }
 
-
-
-
-
     public Contenido() {
 
     }
@@ -56,11 +73,11 @@ public class Contenido {
         this.titulo = titulo;
     }
 
-    public Director getDirector() {
+    public String getDirector() {
         return director;
     }
 
-    public void setDirector(Director director) {
+    public void setDirector(String director) {
         this.director = director;
     }
 

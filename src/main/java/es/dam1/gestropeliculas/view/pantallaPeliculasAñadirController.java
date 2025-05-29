@@ -1,10 +1,8 @@
 package es.dam1.gestropeliculas.view;
 
 import es.dam1.gestropeliculas.DAO.ContenidoDAO;
-import es.dam1.gestropeliculas.DAO.DirectorDAO;
 import es.dam1.gestropeliculas.DAO.PeliculaDAO;
 import es.dam1.gestropeliculas.model.Contenido;
-import es.dam1.gestropeliculas.model.Director;
 import es.dam1.gestropeliculas.model.Estado;
 import es.dam1.gestropeliculas.model.Genero;
 import es.dam1.gestropeliculas.model.Pelicula;

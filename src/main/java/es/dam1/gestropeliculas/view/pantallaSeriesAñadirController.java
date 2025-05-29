@@ -1,7 +1,6 @@
 package es.dam1.gestropeliculas.view;
 
 import es.dam1.gestropeliculas.DAO.ContenidoDAO;
-import es.dam1.gestropeliculas.DAO.DirectorDAO;
 import es.dam1.gestropeliculas.DAO.SerieDAO;
 import es.dam1.gestropeliculas.model.*;
 import javafx.collections.FXCollections;

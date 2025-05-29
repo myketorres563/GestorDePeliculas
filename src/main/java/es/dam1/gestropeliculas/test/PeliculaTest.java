@@ -2,7 +2,6 @@ package es.dam1.gestropeliculas.test;
 
 import es.dam1.gestropeliculas.DAO.ContenidoDAO;
 import es.dam1.gestropeliculas.DAO.PeliculaDAO;
-import es.dam1.gestropeliculas.DAO.DirectorDAO;
 import es.dam1.gestropeliculas.DAO.UsuarioDAO;
 import es.dam1.gestropeliculas.model.*;
 

@@ -1,9 +1,24 @@
 package es.dam1.gestropeliculas.model;
 
+import java.util.List;
+
 public class Usuario {
     private String usuario;
     private int contrasenia;
     private String email;
+
+    List<UsuarioContenido> contenidos;
+
+
+
+
+
+
+
+
+
+
+
 
     public Usuario(String usuario, String email, int contrasenia) {
         this.usuario = usuario;
