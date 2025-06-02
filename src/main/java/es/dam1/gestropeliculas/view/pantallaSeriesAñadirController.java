@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class pantallaSeriesAñadirController {
 
     @FXML private TextField txtTitulo;
-    @FXML private ComboBox<Director> comboDirector;
+    @FXML private TextField txtDirector;
     @FXML private ComboBox<Estado> comboEstado;
     @FXML private TextField txtAnyoEstreno;
     @FXML private ComboBox<Genero> comboGenero;
@@ -21,39 +21,37 @@ public class pantallaSeriesAñadirController {
     @FXML private Button btnCancelar;
 
     /**
-     *
-     * Inicializa los valores de los ComboBox con datos de la base de datos o enums.
-     *
+     * Inicializa los valores de los ComboBox con datos de enums.
      */
     @FXML
     public void initialize() {
-        comboDirector.setItems(FXCollections.observableArrayList(DirectorDAO.findAll()));
         comboEstado.setItems(FXCollections.observableArrayList(Estado.values()));
         comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));
     }
 
     /**
-     *
      * Acción para guardar una nueva serie. Realiza validaciones, inserta el contenido y la serie en la base de datos.
-     *
      */
     @FXML
     private void accionGuardar() {
         try {
             String titulo = txtTitulo.getText();
-            Director director = comboDirector.getValue();
+            String director = txtDirector.getText();
             Estado estado = comboEstado.getValue();
-            int anyo = Integer.parseInt(txtAnyoEstreno.getText());
+            String anyoTexto = txtAnyoEstreno.getText();
             Genero genero = comboGenero.getValue();
             String sinopsis = txtSinopsis.getText();
-            int temporadas = Integer.parseInt(txtTemporadas.getText());
+            String temporadasTexto = txtTemporadas.getText();
 
             // Validaciones simples opcionales
-            if (titulo.isEmpty() || director == null || estado == null || genero == null || sinopsis.isEmpty()) {
+            if (titulo.isEmpty() || director.isEmpty() || estado == null || genero == null || sinopsis.isEmpty() || anyoTexto.isEmpty() || temporadasTexto.isEmpty()) {
                 throw new IllegalArgumentException("Rellena todos los campos correctamente.");
             }
 
-            Contenido nuevoContenido = new Contenido(0, null, director, titulo, estado, anyo, genero, sinopsis);
+            int anyo = Integer.parseInt(anyoTexto);
+            int temporadas = Integer.parseInt(temporadasTexto);
+
+            Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
 
             int idContenido = ContenidoDAO.insertContenido(nuevoContenido);
             if (idContenido <= 0) {
@@ -73,9 +71,7 @@ public class pantallaSeriesAñadirController {
     }
 
     /**
-     *
      * Acción para cerrar la ventana actual.
-     *
      */
     @FXML
     private void accionAtras() {
@@ -83,9 +79,7 @@ public class pantallaSeriesAñadirController {
     }
 
     /**
-     *
      * Cierra la ventana actual.
-     *
      */
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
@@ -93,9 +87,7 @@ public class pantallaSeriesAñadirController {
     }
 
     /**
-     *
      * Muestra una alerta en pantalla.
-     *
      * @param titulo  Título de la alerta.
      * @param mensaje Mensaje de la alerta.
      * @param tipo    Tipo de alerta.

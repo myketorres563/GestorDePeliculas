@@ -15,20 +15,10 @@ public class pantallaPrincipalController {
      */
     @FXML
     public void abrirListaPeliculas(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPeliculas.fxml", "Lista de Películas");
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaListaPeliculas.fxml", "Lista de Películas");
     }
 
-    /**
-     *
-     * Abre la ventana con la lista de directores.
-     *
-     * @param event Evento de acción del botón correspondiente.
-     * @throws IOException Si ocurre un error al abrir la ventana.
-     */
-    @FXML
-    public void abrirListaDirectores(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaDirectores.fxml", "Lista de Directores");
-    }
+
 
     /**
      *
@@ -39,7 +29,7 @@ public class pantallaPrincipalController {
      */
     @FXML
     public void abrirListaSeries(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaSeries.fxml", "Lista de Series");
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaListaSeries.fxml", "Lista de Series");
     }
 
     /**
@@ -54,17 +44,6 @@ public class pantallaPrincipalController {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPeliculasAñadir.fxml", "Añadir Película");
     }
 
-    /**
-     *
-     * Abre el formulario para añadir un nuevo director.
-     *
-     * @param event Evento de acción del botón correspondiente.
-     * @throws IOException Si ocurre un error al abrir la ventana.
-     */
-    @FXML
-    public void abrirFormularioDirector(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaDirectoresAñadir.fxml", "Añadir Director");
-    }
 
     /**
      *

@@ -13,7 +13,7 @@
       </ImageView>
       <Button layoutX="147.0" layoutY="161.0" mnemonicParsing="false" onAction="#abrirListaPeliculas" text="Lista Películas" />
       <Button layoutX="341.0" layoutY="161.0" mnemonicParsing="false" onAction="#abrirListaSeries" text="Lista Series" />
-      <Button layoutX="141.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioPelicula" text="Añadir Películas" />
-      <Button layoutX="335.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioSerie" text="Añadir Series" />
+      <Button layoutX="149.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioPelicula" text="Mis Peliculas" />
+      <Button layoutX="343.0" layoutY="212.0" mnemonicParsing="false" onAction="#abrirFormularioSerie" text="Mis Series" />
    </children>
 </AnchorPane>

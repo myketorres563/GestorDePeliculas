@@ -1,32 +1,13 @@
 package es.dam1.gestropeliculas.model;
-import java.time.LocalDate;
-import java.util.List;
 
+import java.time.LocalDate;
 
 public class UsuarioContenido {
     private Usuario usuario;
     private Contenido contenido;
     private LocalDate fechaAñadido;
 
-    List<Usuario> usuarios;
-    List<Contenido> contenidos;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public UsuarioContenido(Usuario usuario, LocalDate fechaAñadido ,Contenido contenido) {
+    public UsuarioContenido(Usuario usuario, Contenido contenido, LocalDate fechaAñadido) {
         this.usuario = usuario;
         this.contenido = contenido;
         this.fechaAñadido = fechaAñadido;
@@ -46,6 +27,14 @@ public class UsuarioContenido {
 
     public void setContenido(Contenido contenido) {
         this.contenido = contenido;
+    }
+
+    public LocalDate getFechaAñadido() {
+        return fechaAñadido;
+    }
+
+    public void setFechaAñadido(LocalDate fechaAñadido) {
+        this.fechaAñadido = fechaAñadido;
     }
 
     @Override

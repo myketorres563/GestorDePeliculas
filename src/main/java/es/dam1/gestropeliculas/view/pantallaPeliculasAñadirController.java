@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class pantallaPeliculasAñadirController {
 
     @FXML private TextField txtTitulo;
-    @FXML private ComboBox<Director> comboDirector;
+    @FXML private TextField txtDirector;
     @FXML private ComboBox<Estado> comboEstado;
     @FXML private TextField txtAnyoEstreno;
     @FXML private ComboBox<Genero> comboGenero;
@@ -24,34 +24,38 @@ public class pantallaPeliculasAñadirController {
     @FXML private Button btnCancelar;
 
     /**
-     *
-     * Inicializa los ComboBox con los valores de la base de datos y enums.
-     *
+     * Inicializa los ComboBox con los valores de enums.
      */
     @FXML
     public void initialize() {
-        comboDirector.setItems(FXCollections.observableArrayList(DirectorDAO.findAll()));
         comboEstado.setItems(FXCollections.observableArrayList(Estado.values()));
         comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));
     }
 
     /**
-     *
      * Acción para guardar una nueva película. Realiza validaciones e inserta los datos en la base de datos.
-     *
      */
     @FXML
     private void accionGuardar() {
         try {
-            String titulo     = txtTitulo.getText();
-            Director director = comboDirector.getValue();
-            Estado estado     = comboEstado.getValue();
-            int anyo          = Integer.parseInt(txtAnyoEstreno.getText());
-            Genero genero     = comboGenero.getValue();
-            String sinopsis   = txtSinopsis.getText();
-            int duracion      = Integer.parseInt(txtDuracion.getText());
+            String titulo    = txtTitulo.getText();
+            String director  = txtDirector.getText();
+            Estado estado    = comboEstado.getValue();
+            String anyoTexto = txtAnyoEstreno.getText();
+            Genero genero    = comboGenero.getValue();
+            String sinopsis  = txtSinopsis.getText();
+            String duracionTexto = txtDuracion.getText();
 
-            Contenido nuevoContenido = new Contenido(0, null, director, titulo, estado, anyo, genero, sinopsis);
+            // Validaciones simples opcionales
+            if (titulo.isEmpty() || director.isEmpty() || estado == null || genero == null ||
+                    sinopsis.isEmpty() || anyoTexto.isEmpty() || duracionTexto.isEmpty()) {
+                throw new IllegalArgumentException("Rellena todos los campos correctamente.");
+            }
+
+            int anyo = Integer.parseInt(anyoTexto);
+            int duracion = Integer.parseInt(duracionTexto);
+
+            Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
             int idGenerado = ContenidoDAO.insertContenido(nuevoContenido);
             if (idGenerado <= 0) {
                 throw new RuntimeException("No se pudo insertar el contenido.");
@@ -69,9 +73,7 @@ public class pantallaPeliculasAñadirController {
     }
 
     /**
-     *
      * Acción para cerrar la ventana actual.
-     *
      */
     @FXML
     private void accionAtras() {
@@ -79,9 +81,7 @@ public class pantallaPeliculasAñadirController {
     }
 
     /**
-     *
      * Cierra la ventana actual.
-     *
      */
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
@@ -89,9 +89,7 @@ public class pantallaPeliculasAñadirController {
     }
 
     /**
-     *
      * Muestra una alerta en pantalla.
-     *
      * @param titulo  Título de la alerta.
      * @param mensaje Mensaje de la alerta.
      * @param tipo    Tipo de alerta.

@@ -1,5 +1,6 @@
 package es.dam1.gestropeliculas.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
@@ -7,18 +8,8 @@ public class Usuario {
     private int contrasenia;
     private String email;
 
-    List<UsuarioContenido> contenidos;
-
-
-
-
-
-
-
-
-
-
-
+    // Lista de relaciones con contenidos
+    private List<UsuarioContenido> usuarioContenidos = new ArrayList<>();
 
     public Usuario(String usuario, String email, int contrasenia) {
         this.usuario = usuario;
@@ -50,11 +41,35 @@ public class Usuario {
         this.usuario = usuario;
     }
 
+    public List<UsuarioContenido> getUsuarioContenidos() {
+        return usuarioContenidos;
+    }
+
+    public void setUsuarioContenidos(List<UsuarioContenido> usuarioContenidos) {
+        this.usuarioContenidos = usuarioContenidos;
+    }
+
+    public class Sesion {
+        private static Usuario usuarioActual;
+        public static Usuario getUsuarioActual() { return usuarioActual; }
+        public static void setUsuarioActual(Usuario usuario) { usuarioActual = usuario; }
+    }
+
+
+    // Método para obtener solo los contenidos asociados a este usuario
+    public List<Contenido> getContenidos() {
+        List<Contenido> lista = new ArrayList<>();
+        for (UsuarioContenido uc : usuarioContenidos) {
+            lista.add(uc.getContenido());
+        }
+        return lista;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
                 "usuario='" + usuario + '\'' +
-                ", contrasenia='" + contrasenia + '\'' +
+                ", contrasenia=" + contrasenia +
                 ", email='" + email + '\'' +
                 '}';
     }

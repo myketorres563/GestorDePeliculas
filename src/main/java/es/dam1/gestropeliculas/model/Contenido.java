@@ -1,9 +1,9 @@
 package es.dam1.gestropeliculas.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Contenido {
-    private Usuario usuario;
     private int ID;
     private String titulo;
     private String director;
@@ -12,29 +12,11 @@ public class Contenido {
     private Genero genero;
     private String sinopsis;
 
+    // Lista de relaciones con usuarios
+    private List<UsuarioContenido> usuarioContenidos = new ArrayList<>();
 
-    List<Usuario> usuarios;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public Contenido(int ID, Usuario usuario, String director, String titulo,
-                     Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
+    public Contenido(int ID, String director, String titulo, Estado estado, int anyoEstreno, Genero genero, String sinopsis) {
         this.ID = ID;
-        this.usuario = usuario;
         this.director = director;
         this.titulo = titulo;
         this.estado = estado;
@@ -42,9 +24,9 @@ public class Contenido {
         this.genero = genero;
         this.sinopsis = sinopsis;
     }
+
     public Contenido(Contenido otro) {
         this.ID = otro.ID;
-        this.usuario = otro.usuario;
         this.director = otro.director;
         this.titulo = otro.titulo;
         this.estado = otro.estado;
@@ -53,9 +35,7 @@ public class Contenido {
         this.sinopsis = otro.sinopsis;
     }
 
-    public Contenido() {
-
-    }
+    public Contenido() {}
 
     public int getID() {
         return ID;
@@ -113,18 +93,27 @@ public class Contenido {
         this.sinopsis = sinopsis;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public List<UsuarioContenido> getUsuarioContenidos() {
+        return usuarioContenidos;
     }
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+
+    public void setUsuarioContenidos(List<UsuarioContenido> usuarioContenidos) {
+        this.usuarioContenidos = usuarioContenidos;
+    }
+
+    // Método para obtener los usuarios que han añadido este contenido
+    public List<Usuario> getUsuarios() {
+        List<Usuario> lista = new ArrayList<>();
+        for (UsuarioContenido uc : usuarioContenidos) {
+            lista.add(uc.getUsuario());
+        }
+        return lista;
     }
 
     @Override
     public String toString() {
         return "Contenido{" +
-                "usuario=" + usuario +
-                ", ID=" + ID +
+                "ID=" + ID +
                 ", titulo='" + titulo + '\'' +
                 ", director=" + director +
                 ", estado=" + estado +
