@@ -2,6 +2,7 @@ package es.dam1.gestropeliculas.view;
 
 import es.dam1.gestropeliculas.App;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -26,4 +27,5 @@ public class Utils {
         stage.setTitle(titulo);
         stage.show();
     }
+
 }

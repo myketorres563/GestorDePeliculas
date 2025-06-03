@@ -14,5 +14,4 @@ module es.dam1.gestropeliculas {
     // Exportaciones
     exports es.dam1.gestropeliculas;
     exports es.dam1.gestropeliculas.view;
-    exports es.dam1.gestropeliculas.test;
 }

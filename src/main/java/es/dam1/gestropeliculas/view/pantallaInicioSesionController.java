@@ -1,6 +1,7 @@
 package es.dam1.gestropeliculas.view;
 
 import es.dam1.gestropeliculas.DAO.UsuarioDAO;
+import es.dam1.gestropeliculas.model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -23,7 +24,11 @@ public class pantallaInicioSesionController {
         String contraseñaUsuario = contraseniaInicio.getText().trim();
 
         if (UsuarioDAO.validarCredenciales(nombreUsuario, contraseñaUsuario)) {
-            // Las credenciales son válidas → Abrimos nueva ventana o pantalla principal
+            // ¡GUARDAMOS el usuario en sesión!
+            Usuario usuario = UsuarioDAO.findById(nombreUsuario);
+            Usuario.Sesion.setUsuarioActual(usuario);
+
+            // Abrimos la nueva ventana
             try {
                 Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPrincipal.fxml", "Gestor de Películas");
             } catch (IOException e) {
@@ -38,6 +43,7 @@ public class pantallaInicioSesionController {
             alerta.showAndWait();
         }
     }
+
 
     /**
      *

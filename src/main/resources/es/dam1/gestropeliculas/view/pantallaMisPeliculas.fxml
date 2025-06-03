@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.dam1.gestropeliculas.view.pantallaMisPeliculasController">
+
+    <children>
+        <!-- Fondo -->
+        <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+            <image>
+                <Image url="@../../../../images/Red%20Black%20Modern%20Bold%20Cinema%20Club%20Presentation%20(1).png"/>
+            </image>
+        </ImageView>
+
+        <!-- Título -->
+        <Text layoutX="215.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mis Películas">
+            <font>
+                <Font name="Arial" size="36.0"/>
+            </font>
+        </Text>
+
+        <!-- Tabla de Películas -->
+        <TableView fx:id="tablaPeliculas" layoutX="20.0" layoutY="80.0" prefHeight="240.0" prefWidth="560.0">
+            <columns>
+                <TableColumn fx:id="colTitulo"    prefWidth="90.0"  text="Título"/>
+                <TableColumn fx:id="colDirector"  prefWidth="90.0"  text="Director"/>
+                <TableColumn fx:id="colEstado"    prefWidth="80.0"  text="Estado"/>
+                <TableColumn fx:id="colAnyo"      prefWidth="55.0"  text="Año"/>
+                <TableColumn fx:id="colGenero"    prefWidth="80.0"  text="Género"/>
+                <TableColumn fx:id="colSinopsis"  prefWidth="95.0"  text="Sinopsis"/>
+                <TableColumn fx:id="colDuracion"  prefWidth="70.0"  text="Duración"/>
+            </columns>
+        </TableView>
+
+        <!-- Botones -->
+        <Button fx:id="btnAtras"         layoutX="20.0"  layoutY="340.0" text="Atrás"             onAction="#accionAtras"/>
+        <Button fx:id="btnEliminar"      layoutX="110.0" layoutY="340.0" text="Eliminar"          onAction="#accionEliminar"/>
+        <Button fx:id="btnAnadir"        layoutX="200.0" layoutY="340.0" text="Añadir"            onAction="#accionAnadir"/>
+        <Button fx:id="btnModificar"     layoutX="290.0" layoutY="340.0" text="Modificar"         onAction="#accionModificar"/>
+    </children>
+</AnchorPane>

@@ -41,7 +41,7 @@ public class pantallaPrincipalController {
      */
     @FXML
     public void abrirFormularioPelicula(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPeliculasAñadir.fxml", "Añadir Película");
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaMisPeliculas.fxml", "Mis Películas");
     }
 
 
@@ -54,6 +54,6 @@ public class pantallaPrincipalController {
      */
     @FXML
     public void abrirFormularioSerie(ActionEvent event) throws IOException {
-        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaSeriesAñadir.fxml", "Añadir Serie");
+        Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaMisSeries.fxml", "Mis Series");
     }
 }

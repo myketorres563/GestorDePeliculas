@@ -1,11 +1,15 @@
 package es.dam1.gestropeliculas.DAO;
 
 import es.dam1.gestropeliculas.baseDeDatos.ConnectionBD;
+import es.dam1.gestropeliculas.model.Contenido;
 import es.dam1.gestropeliculas.model.Usuario;
+import es.dam1.gestropeliculas.model.UsuarioContenido;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,18 +19,16 @@ public class UsuarioDAO {
     private static final String SQL_DELETE = "DELETE FROM usuario WHERE Usuario = ?";
     private static final String SQL_VALIDAR_CREDENCIALES = "SELECT * FROM usuario WHERE Usuario = ? AND Contraseña = ?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM usuario WHERE Usuario = ?";
+    private static final String SQL_USUARIO_CONTENIDOS = "SELECT * FROM usuario_contenido WHERE Usuario = ?";
 
-    /**
-     *
-     * Inserta un nuevo usuario en la base de datos.
-     *
-     * @param usuario Objeto Usuario a insertar.
-     * @return true si se insertó correctamente, false en caso contrario.
-     */
+    // Insertar usuario
     public static boolean insertUsuario(Usuario usuario) {
         boolean result = false;
         if (usuario != null) {
-            try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_INSERT)) {
+            try (
+                    Connection conn = ConnectionBD.getConnection();
+                    PreparedStatement pst = conn.prepareStatement(SQL_INSERT)
+            ) {
                 pst.setString(1, usuario.getUsuario());
                 pst.setString(2, usuario.getEmail());
                 pst.setInt(3, usuario.getContrasenia());
@@ -39,17 +41,14 @@ public class UsuarioDAO {
         return result;
     }
 
-    /**
-     *
-     * Actualiza los datos de un usuario en la base de datos.
-     *
-     * @param usuario Objeto Usuario con los datos actualizados.
-     * @return true si se actualizó correctamente, false en caso contrario.
-     */
+    // Actualizar usuario
     public static boolean updateUsuario(Usuario usuario) {
         boolean result = false;
         if (usuario != null) {
-            try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_UPDATE)) {
+            try (
+                    Connection conn = ConnectionBD.getConnection();
+                    PreparedStatement pst = conn.prepareStatement(SQL_UPDATE)
+            ) {
                 pst.setString(1, usuario.getUsuario());
                 pst.setString(2, usuario.getEmail());
                 pst.setInt(3, usuario.getContrasenia());
@@ -63,16 +62,13 @@ public class UsuarioDAO {
         return result;
     }
 
-    /**
-     *
-     * Elimina un usuario de la base de datos por su nombre de usuario.
-     *
-     * @param usuario Nombre de usuario a eliminar.
-     * @return true si se eliminó correctamente, false en caso contrario.
-     */
+    // Eliminar usuario
     public static boolean deleteUsuario(String usuario) {
         boolean result = false;
-        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_DELETE)) {
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(SQL_DELETE)
+        ) {
             pst.setString(1, usuario);
             pst.executeUpdate();
             result = true;
@@ -82,17 +78,13 @@ public class UsuarioDAO {
         return result;
     }
 
-    /**
-     *
-     * Valida si las credenciales del usuario son correctas.
-     *
-     * @param usuario      Nombre de usuario.
-     * @param contrasenia  Contraseña del usuario.
-     * @return true si las credenciales son válidas, false en caso contrario.
-     */
+    // Validar credenciales
     public static boolean validarCredenciales(String usuario, String contrasenia) {
         boolean valido = false;
-        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_VALIDAR_CREDENCIALES)) {
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(SQL_VALIDAR_CREDENCIALES)
+        ) {
             pst.setString(1, usuario);
             pst.setString(2, contrasenia);
             try (ResultSet rs = pst.executeQuery()) {
@@ -106,16 +98,13 @@ public class UsuarioDAO {
         return valido;
     }
 
-    /**
-     *
-     * Busca un usuario por su nombre de usuario.
-     *
-     * @param usuario Nombre de usuario a buscar.
-     * @return Objeto Usuario si existe, null si no existe.
-     */
+    // Obtener usuario y sus UsuarioContenido (Eager)
     public static Usuario findById(String usuario) {
         Usuario user = null;
-        try (PreparedStatement pst = ConnectionBD.getConnection().prepareStatement(SQL_FIND_BY_ID)) {
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(SQL_FIND_BY_ID)
+        ) {
             pst.setString(1, usuario);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
@@ -124,11 +113,40 @@ public class UsuarioDAO {
                             rs.getString("Email"),
                             rs.getInt("Contraseña")
                     );
+                    // EAGER: cargar todos los UsuarioContenido del usuario
+                    user.setUsuarioContenidos(cargarUsuarioContenidos(user));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
+    }
+
+    // Método auxiliar para cargar UsuarioContenido de un usuario
+    private static List<UsuarioContenido> cargarUsuarioContenidos(Usuario usuario) {
+        List<UsuarioContenido> lista = new ArrayList<>();
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(SQL_USUARIO_CONTENIDOS)
+        ) {
+            pst.setString(1, usuario.getUsuario());
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Contenido contenidoObj = ContenidoDAO.findById(rs.getInt("IdContenido")); // El Contenido SÍ se carga completo
+                    LocalDate fecha = rs.getDate("FechaAñadido").toLocalDate();
+
+                    UsuarioContenido uc = new UsuarioContenido(
+                            usuario,        // Usar el objeto que ya tienes
+                            contenidoObj,
+                            fecha
+                    );
+                    lista.add(uc);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }

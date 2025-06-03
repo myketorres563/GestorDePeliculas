@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UsuarioContenidoDAO {
 
-    private static final String INSERT_SQL = "INSERT INTO usuario_contenido (usuario, IDContenido, fecha_anadido) VALUES (?, ?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO usuario_contenido (usuario, IDContenido, fechaAñadido) VALUES (?, ?, ?)";
     private static final String DELETE_SQL = "DELETE FROM usuario_contenido WHERE usuario = ? AND IDContenido = ?";
     private static final String FIND_BY_USUARIO_SQL = "SELECT * FROM usuario_contenido WHERE usuario = ?";
     private static final String FIND_BY_CONTENIDO_SQL = "SELECT * FROM usuario_contenido WHERE IDContenido = ?";
@@ -24,8 +24,8 @@ public class UsuarioContenidoDAO {
                 Connection conn = ConnectionBD.getConnection();
                 PreparedStatement pst = conn.prepareStatement(INSERT_SQL)
         ) {
-            pst.setString(1, uc.getUsuario().getUsuario()); // suponiendo que Usuario tiene getUsuario()
-            pst.setInt(2, uc.getContenido().getID()); // suponiendo que Contenido tiene getID()
+            pst.setString(1, uc.getUsuario().getUsuario());
+            pst.setInt(2, uc.getContenido().getID());
             pst.setDate(3, Date.valueOf(uc.getFechaAñadido()));
             return pst.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -57,9 +57,9 @@ public class UsuarioContenidoDAO {
             pst.setString(1, usuario.getUsuario());
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    // Debes buscar los objetos Contenido y Usuario desde sus respectivos DAOs
                     Contenido contenido = ContenidoDAO.findById(rs.getInt("IDContenido"));
-                    LocalDate fecha = rs.getDate("fecha_anadido").toLocalDate();
+                    // Cambiado el nombre de la columna:
+                    LocalDate fecha = rs.getDate("fechaAñadido").toLocalDate();
                     lista.add(new UsuarioContenido(usuario, contenido, fecha));
                 }
             }
@@ -80,7 +80,8 @@ public class UsuarioContenidoDAO {
             try (ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     Usuario usuario = UsuarioDAO.findById(rs.getString("usuario"));
-                    LocalDate fecha = rs.getDate("fecha_anadido").toLocalDate();
+                    // Cambiado el nombre de la columna:
+                    LocalDate fecha = rs.getDate("fechaAñadido").toLocalDate();
                     lista.add(new UsuarioContenido(usuario, contenido, fecha));
                 }
             }

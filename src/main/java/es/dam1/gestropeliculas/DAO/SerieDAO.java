@@ -9,16 +9,18 @@ import java.util.List;
 
 public class SerieDAO {
 
+    // Consultas SQL estáticas para claridad y fácil mantenimiento
     private static final String SQL_INSERT  = "INSERT INTO series (IDContenido, temporadas) VALUES (?, ?)";
     private static final String SQL_UPDATE  = "UPDATE series SET temporadas = ? WHERE IDContenido = ?";
     private static final String SQL_DELETE  = "DELETE FROM series WHERE IDContenido = ?";
     private static final String SQL_SELECT  = "SELECT * FROM series";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM series WHERE IDContenido = ?";
 
     /**
+     * Devuelve todas las series de la base de datos.
+     * Carga también los datos completos del objeto Contenido asociado a cada Serie (estilo EAGER).
      *
-     * Devuelve todas las series existentes en la base de datos.
-     *
-     * @return Lista de objetos Series.
+     * @return Lista de Series con su Contenido.
      */
     public static List<Series> findAll() {
         List<Series> lista = new ArrayList<>();
@@ -30,8 +32,11 @@ public class SerieDAO {
             while (rs.next()) {
                 int idCont = rs.getInt("IDContenido");
                 int temp   = rs.getInt("temporadas");
+                // Cargar el objeto Contenido completo relacionado con la serie
                 Contenido c = ContenidoDAO.findById(idCont);
-                lista.add(new Series(c, temp));
+                if (c != null) {
+                    lista.add(new Series(c, temp));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error al obtener todas las series", e);
@@ -40,11 +45,39 @@ public class SerieDAO {
     }
 
     /**
+     * Busca una serie por su ID de contenido.
+     * Carga también el objeto Contenido asociado (EAGER).
      *
-     * Inserta una nueva serie en la base de datos (requiere que el contenido ya exista).
+     * @param idContenido ID de la serie/Contenido.
+     * @return Objeto Series completo, o null si no existe.
+     */
+    public static Series findById(int idContenido) {
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(SQL_FIND_BY_ID)
+        ) {
+            pst.setInt(1, idContenido);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    int temp = rs.getInt("temporadas");
+                    Contenido c = ContenidoDAO.findById(idContenido);
+                    if (c != null) {
+                        return new Series(c, temp);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al buscar Serie por ID", e);
+        }
+        return null;
+    }
+
+    /**
+     * Inserta una nueva serie en la base de datos.
+     * Se asume que el Contenido ya existe y se le pasa por el objeto Series.
      *
      * @param serie Objeto Series a insertar.
-     * @return La serie insertada, o null si no se pudo insertar.
+     * @return La serie insertada (igual que la recibida), o null si es null.
      */
     public static Series insertSerie(Series serie) {
         if (serie == null) return null;
@@ -62,11 +95,10 @@ public class SerieDAO {
     }
 
     /**
+     * Actualiza los datos de una serie en la base de datos.
      *
-     * Actualiza una serie existente en la base de datos.
-     *
-     * @param serie Objeto Series con los datos actualizados.
-     * @return true si se actualizó correctamente, false en caso contrario.
+     * @param serie Objeto Series con los nuevos datos.
+     * @return true si se actualizó correctamente, false si no.
      */
     public static boolean updateSerie(Series serie) {
         if (serie == null) return false;
@@ -83,11 +115,10 @@ public class SerieDAO {
     }
 
     /**
-     *
      * Elimina una serie de la base de datos por su IDContenido.
      *
      * @param idContenido ID del contenido asociado a la serie.
-     * @return true si la serie se eliminó correctamente, false en caso contrario.
+     * @return true si la serie se eliminó correctamente, false si no.
      */
     public static boolean deleteSerie(int idContenido) {
         try (
