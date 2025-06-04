@@ -35,10 +35,8 @@ De herramientas para la corrección de errores y ayudas con partes del código C
 ## 3º Mejoras
 
 * Optimización del Código
-* Añadir la función de editar contenido ya añadido
-* Corregir los errores de los usuarios(hay que corregir que cuando inicias sesion con un usuario no puedas ver el contenido de otros usuarios, o hacer para que un usuario tenga el apartado de tu contenido en donde estaría solo lo que él añadió y otro para ver tanto lo tuyo como lo que los otros usuarios han añadido)
-* Lista de Favoritos
 * Filtro y búsqueda avanzada
+* Mejorar la Inerfaz
 
 
 ## 4º Conclusión
