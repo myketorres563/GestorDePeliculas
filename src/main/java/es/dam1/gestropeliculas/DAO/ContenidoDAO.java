@@ -192,6 +192,23 @@ public class ContenidoDAO {
         return peliculas;
     }
 
+    // Elimina la relación usuario-contenido (sirve tanto para series como para películas)
+    public static boolean eliminarUsuarioContenido(String usuario, int idContenido) {
+        String sql = "DELETE FROM usuario_contenido WHERE usuario = ? AND IDContenido = ?";
+        try (
+                Connection conn = ConnectionBD.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)
+        ) {
+            pst.setString(1, usuario);
+            pst.setInt(2, idContenido);
+            return pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     // Series SOLO del usuario logueado
     public static List<Series> getSeriesPorUsuario(String nombreUsuario) {
         List<Series> seriesList = new ArrayList<>();

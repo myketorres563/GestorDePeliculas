@@ -23,17 +23,29 @@ public class pantallaPeliculasAñadirController {
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
 
-    /**
-     * Inicializa los ComboBox con los valores de enums.
-     */
+    // Variable para saber si estamos editando o añadiendo
+    private Pelicula peliculaEditando = null;
+
     @FXML
     public void initialize() {
         comboEstado.setItems(FXCollections.observableArrayList(Estado.values()));
         comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));
     }
 
+    // Método para precargar los datos en modo edición
+    public void cargarDatosPelicula(Pelicula pelicula) {
+        this.peliculaEditando = pelicula;
+        txtTitulo.setText(pelicula.getTitulo());
+        txtDirector.setText(pelicula.getDirector());
+        comboEstado.setValue(pelicula.getEstado());
+        txtAnyoEstreno.setText(String.valueOf(pelicula.getAnyoEstreno()));
+        comboGenero.setValue(pelicula.getGenero());
+        txtSinopsis.setText(pelicula.getSinopsis());
+        txtDuracion.setText(String.valueOf(pelicula.getDuracion()));
+    }
+
     /**
-     * Acción para guardar una nueva película. Realiza validaciones e inserta los datos en la base de datos.
+     * Acción para guardar una nueva película o modificar una existente.
      */
     @FXML
     private void accionGuardar() {
@@ -46,7 +58,6 @@ public class pantallaPeliculasAñadirController {
             String sinopsis  = txtSinopsis.getText();
             String duracionTexto = txtDuracion.getText();
 
-            // Validaciones simples opcionales
             if (titulo.isEmpty() || director.isEmpty() || estado == null || genero == null ||
                     sinopsis.isEmpty() || anyoTexto.isEmpty() || duracionTexto.isEmpty()) {
                 throw new IllegalArgumentException("Rellena todos los campos correctamente.");
@@ -55,45 +66,51 @@ public class pantallaPeliculasAñadirController {
             int anyo = Integer.parseInt(anyoTexto);
             int duracion = Integer.parseInt(duracionTexto);
 
-            Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
-            int idGenerado = ContenidoDAO.insertContenido(nuevoContenido);
-            if (idGenerado <= 0) {
-                throw new RuntimeException("No se pudo insertar el contenido.");
+            if (peliculaEditando == null) {
+                // --- AÑADIR NUEVA PELÍCULA ---
+                Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
+                int idGenerado = ContenidoDAO.insertContenido(nuevoContenido);
+                if (idGenerado <= 0) {
+                    throw new RuntimeException("No se pudo insertar el contenido.");
+                }
+                nuevoContenido.setID(idGenerado);
+
+                Pelicula nuevaPelicula = new Pelicula(nuevoContenido, duracion);
+                PeliculaDAO.insertPelicula(nuevaPelicula);
+
+                mostrarAlerta("Éxito", "Película añadida correctamente.", Alert.AlertType.INFORMATION);
+            } else {
+                // --- MODIFICAR PELÍCULA EXISTENTE ---
+                peliculaEditando.setTitulo(titulo);
+                peliculaEditando.setDirector(director);
+                peliculaEditando.setEstado(estado);
+                peliculaEditando.setAnyoEstreno(anyo);
+                peliculaEditando.setGenero(genero);
+                peliculaEditando.setSinopsis(sinopsis);
+                peliculaEditando.setDuracion(duracion);
+
+                ContenidoDAO.updateContenido(peliculaEditando); // Pasa la película, que hereda de Contenido
+                PeliculaDAO.updatePelicula(peliculaEditando);
+
+                mostrarAlerta("Éxito", "Película modificada correctamente.", Alert.AlertType.INFORMATION);
             }
-            nuevoContenido.setID(idGenerado);
 
-            Pelicula nuevaPelicula = new Pelicula(nuevoContenido, duracion);
-            PeliculaDAO.insertPelicula(nuevaPelicula);
-
-            mostrarAlerta("Éxito", "Película añadida correctamente.", Alert.AlertType.INFORMATION);
             cerrarVentana();
         } catch (Exception e) {
             mostrarAlerta("Error", "Datos inválidos o incompletos.\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    /**
-     * Acción para cerrar la ventana actual.
-     */
     @FXML
     private void accionAtras() {
         cerrarVentana();
     }
 
-    /**
-     * Cierra la ventana actual.
-     */
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Muestra una alerta en pantalla.
-     * @param titulo  Título de la alerta.
-     * @param mensaje Mensaje de la alerta.
-     * @param tipo    Tipo de alerta.
-     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

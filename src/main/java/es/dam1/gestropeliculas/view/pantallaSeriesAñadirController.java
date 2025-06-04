@@ -20,17 +20,29 @@ public class pantallaSeriesAñadirController {
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
 
-    /**
-     * Inicializa los valores de los ComboBox con datos de enums.
-     */
+    // --- NUEVO: Para saber si estamos modificando o añadiendo ---
+    private Series serieEditando = null;
+
     @FXML
     public void initialize() {
         comboEstado.setItems(FXCollections.observableArrayList(Estado.values()));
         comboGenero.setItems(FXCollections.observableArrayList(Genero.values()));
     }
 
+    // --- Método para precargar datos en modo edición ---
+    public void cargarDatosSerie(Series serie) {
+        this.serieEditando = serie;
+        txtTitulo.setText(serie.getTitulo());
+        txtDirector.setText(serie.getDirector());
+        comboEstado.setValue(serie.getEstado());
+        txtAnyoEstreno.setText(String.valueOf(serie.getAnyoEstreno()));
+        comboGenero.setValue(serie.getGenero());
+        txtSinopsis.setText(serie.getSinopsis());
+        txtTemporadas.setText(String.valueOf(serie.getTemporadas()));
+    }
+
     /**
-     * Acción para guardar una nueva serie. Realiza validaciones, inserta el contenido y la serie en la base de datos.
+     * Acción para guardar una nueva serie o modificar una existente.
      */
     @FXML
     private void accionGuardar() {
@@ -43,7 +55,6 @@ public class pantallaSeriesAñadirController {
             String sinopsis = txtSinopsis.getText();
             String temporadasTexto = txtTemporadas.getText();
 
-            // Validaciones simples opcionales
             if (titulo.isEmpty() || director.isEmpty() || estado == null || genero == null || sinopsis.isEmpty() || anyoTexto.isEmpty() || temporadasTexto.isEmpty()) {
                 throw new IllegalArgumentException("Rellena todos los campos correctamente.");
             }
@@ -51,18 +62,36 @@ public class pantallaSeriesAñadirController {
             int anyo = Integer.parseInt(anyoTexto);
             int temporadas = Integer.parseInt(temporadasTexto);
 
-            Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
+            if (serieEditando == null) {
+                // --- AÑADIR NUEVA SERIE ---
+                Contenido nuevoContenido = new Contenido(0, director, titulo, estado, anyo, genero, sinopsis);
+                int idContenido = ContenidoDAO.insertContenido(nuevoContenido);
+                if (idContenido <= 0) {
+                    throw new RuntimeException("No se pudo insertar el contenido.");
+                }
+                nuevoContenido.setID(idContenido);
 
-            int idContenido = ContenidoDAO.insertContenido(nuevoContenido);
-            if (idContenido <= 0) {
-                throw new RuntimeException("No se pudo insertar el contenido.");
+                Series nuevaSerie = new Series(nuevoContenido, temporadas);
+                SerieDAO.insertSerie(nuevaSerie);
+
+                mostrarAlerta("Éxito", "Serie añadida correctamente.", Alert.AlertType.INFORMATION);
+            } else {
+                // --- MODIFICAR SERIE EXISTENTE ---
+                serieEditando.setTitulo(titulo);
+                serieEditando.setDirector(director);
+                serieEditando.setEstado(estado);
+                serieEditando.setAnyoEstreno(anyo);
+                serieEditando.setGenero(genero);
+                serieEditando.setSinopsis(sinopsis);
+                serieEditando.setTemporadas(temporadas);
+
+                // Actualizamos el contenido y la serie
+                ContenidoDAO.updateContenido(serieEditando); // Pasa la serie, que es un Contenido
+                SerieDAO.updateSerie(serieEditando);
+
+                mostrarAlerta("Éxito", "Serie modificada correctamente.", Alert.AlertType.INFORMATION);
             }
-            nuevoContenido.setID(idContenido);
 
-            Series nuevaSerie = new Series(nuevoContenido, temporadas);
-            SerieDAO.insertSerie(nuevaSerie);
-
-            mostrarAlerta("Éxito", "Serie añadida correctamente.", Alert.AlertType.INFORMATION);
             cerrarVentana();
 
         } catch (Exception e) {
@@ -70,28 +99,16 @@ public class pantallaSeriesAñadirController {
         }
     }
 
-    /**
-     * Acción para cerrar la ventana actual.
-     */
     @FXML
     private void accionAtras() {
         cerrarVentana();
     }
 
-    /**
-     * Cierra la ventana actual.
-     */
     private void cerrarVentana() {
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
-    /**
-     * Muestra una alerta en pantalla.
-     * @param titulo  Título de la alerta.
-     * @param mensaje Mensaje de la alerta.
-     * @param tipo    Tipo de alerta.
-     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);

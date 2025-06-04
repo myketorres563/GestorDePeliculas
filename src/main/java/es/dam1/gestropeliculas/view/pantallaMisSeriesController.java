@@ -37,7 +37,6 @@ public class pantallaMisSeriesController {
     @FXML
     private Button btnAnadir;
     @FXML
-    private Button btnModificar;
 
     private final ObservableList<Series> listaSeries = FXCollections.observableArrayList();
 
@@ -69,33 +68,31 @@ public class pantallaMisSeriesController {
     @FXML
     private void accionEliminar() {
         Series seleccionada = tablaSeries.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            // Aquí deberías eliminar la relación usuario-serie en la tabla usuario_contenido,
-            // y probablemente actualizar la vista tras borrarlo de la base de datos.
-            listaSeries.remove(seleccionada);
-        } else {
+        Usuario usuarioActual = Usuario.Sesion.getUsuarioActual();
+        if (seleccionada != null && usuarioActual != null) {
+            boolean borrado = ContenidoDAO.eliminarUsuarioContenido(
+                    usuarioActual.getUsuario(),
+                    seleccionada.getID()
+            );
+            if (borrado) {
+                listaSeries.remove(seleccionada);
+                mostrarAlerta("Serie eliminada correctamente.");
+            } else {
+                mostrarAlerta("No se pudo eliminar la serie.");
+            }
+        } else if (seleccionada == null) {
             mostrarAlerta("Selecciona una serie para eliminar.");
+        } else {
+            mostrarAlerta("Usuario no válido.");
         }
     }
+
 
     @FXML
     private void accionAnadir() throws IOException {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaSeriesAñadir.fxml", "Añadir Serie");
     }
 
-    @FXML
-    private void accionModificar() {
-        Series seleccionada = tablaSeries.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            try {
-                Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaSeriesAñadir.fxml", "Modificar Serie");
-            } catch (IOException e) {
-                mostrarAlerta("Error al abrir la ventana de modificación: " + e.getMessage());
-            }
-        } else {
-            mostrarAlerta("Selecciona una serie para modificar.");
-        }
-    }
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

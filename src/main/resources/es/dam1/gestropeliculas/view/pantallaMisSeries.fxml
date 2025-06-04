@@ -45,6 +45,5 @@
         <Button fx:id="btnAtras"         layoutX="20.0"  layoutY="340.0" text="Atrás"             onAction="#accionAtras"/>
         <Button fx:id="btnEliminar"      layoutX="110.0" layoutY="340.0" text="Eliminar"          onAction="#accionEliminar"/>
         <Button fx:id="btnAnadir"        layoutX="200.0" layoutY="340.0" text="Añadir"            onAction="#accionAnadir"/>
-        <Button fx:id="btnModificar"     layoutX="290.0" layoutY="340.0" text="Modificar"         onAction="#accionModificar"/>
     </children>
 </AnchorPane>

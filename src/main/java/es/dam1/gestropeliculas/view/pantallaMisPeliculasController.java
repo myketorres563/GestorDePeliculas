@@ -39,7 +39,6 @@ public class pantallaMisPeliculasController {
     @FXML
     private Button btnAnadir;
     @FXML
-    private Button btnModificar;
 
     private final ObservableList<Pelicula> listaPeliculas = FXCollections.observableArrayList();
 
@@ -72,35 +71,31 @@ public class pantallaMisPeliculasController {
     @FXML
     private void accionEliminar() {
         Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            // Aquí deberías eliminar la relación usuario-pelicula en la tabla usuario_contenido,
-            // y probablemente actualizar la vista tras borrarlo de la base de datos.
-            // Por ejemplo:
-            // UsuarioContenidoDAO.eliminarRelacion(usuario, seleccionada);
-            listaPeliculas.remove(seleccionada);
-        } else {
+        Usuario usuarioActual = Usuario.Sesion.getUsuarioActual();
+        if (seleccionada != null && usuarioActual != null) {
+            boolean borrado = ContenidoDAO.eliminarUsuarioContenido(
+                    usuarioActual.getUsuario(),
+                    seleccionada.getID()
+            );
+            if (borrado) {
+                listaPeliculas.remove(seleccionada);
+                mostrarAlerta("Película eliminada correctamente.");
+            } else {
+                mostrarAlerta("No se pudo eliminar la película.");
+            }
+        } else if (seleccionada == null) {
             mostrarAlerta("Selecciona una película para eliminar.");
+        } else {
+            mostrarAlerta("Usuario no válido.");
         }
     }
+
 
     @FXML
     private void accionAnadir() throws IOException {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPeliculasAñadir.fxml", "Añadir Película");
     }
 
-    @FXML
-    private void accionModificar() {
-        Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            try {
-                Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPeliculaAñadir.fxml", "Modificar Película");
-            } catch (IOException e) {
-                mostrarAlerta("Error al abrir la ventana de modificación: " + e.getMessage());
-            }
-        } else {
-            mostrarAlerta("Selecciona una película para modificar.");
-        }
-    }
 
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

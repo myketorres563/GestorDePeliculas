@@ -10,7 +10,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -28,7 +33,6 @@ public class pantallaListaSeriesController {
     @FXML private TableColumn<Series, Integer> colTemporadas;
 
     @FXML private Button btnAtras;
-    @FXML private Button btnEliminar;
     @FXML private Button btnAnadir;
     @FXML private Button btnModificar;
     @FXML private Button btnAnadirMiLista;
@@ -67,21 +71,6 @@ public class pantallaListaSeriesController {
         }
     }
 
-    @FXML
-    private void accionEliminar() {
-        Series seleccionada = tablaSeries.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            boolean eliminado = SerieDAO.deleteSerie(seleccionada.getID());
-            if (eliminado) {
-                listaSeries.remove(seleccionada); // Quita de la vista
-                mostrarAlerta("Éxito", "Serie eliminada correctamente.", Alert.AlertType.INFORMATION);
-            } else {
-                mostrarAlerta("Error", "No se pudo eliminar la serie de la base de datos.", Alert.AlertType.ERROR);
-            }
-        } else {
-            mostrarAlerta("Aviso", "Selecciona una serie primero.", Alert.AlertType.WARNING);
-        }
-    }
 
     @FXML
     private void accionAnadir() throws IOException {
@@ -92,13 +81,33 @@ public class pantallaListaSeriesController {
     private void accionModificar() {
         Series seleccionada = tablaSeries.getSelectionModel().getSelectedItem();
         if (seleccionada != null) {
-            // Lógica para modificar (ventana aparte)
-            // Utils.abrirNuevaVentanaConDatos(...);
-            mostrarAlerta("Info", "Aquí abrirías la ventana para modificar la serie.", Alert.AlertType.INFORMATION);
+            try {
+                // Cargar el FXML de la ventana de añadir/modificar
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/es/dam1/gestropeliculas/view/pantallaSeriesAñadir.fxml"));
+                Parent root = loader.load();
+
+                // Obtener el controlador y pasarle la serie seleccionada
+                pantallaSeriesAñadirController controller = loader.getController();
+                controller.cargarDatosSerie(seleccionada); // Debes añadir este método al controlador de añadir series
+
+                // Abrir la ventana en modo modal
+                Stage stage = new Stage();
+                stage.setTitle("Modificar Serie");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+
+                // Refrescar la tabla por si hubo cambios
+                recargarTabla();
+            } catch (IOException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error", "No se pudo abrir la ventana de modificación.", Alert.AlertType.ERROR);
+            }
         } else {
             mostrarAlerta("Aviso", "Selecciona una serie primero.", Alert.AlertType.WARNING);
         }
     }
+
 
     @FXML
     private void accionAnadirMiLista() {

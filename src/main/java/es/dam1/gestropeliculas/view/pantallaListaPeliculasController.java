@@ -7,10 +7,15 @@ import es.dam1.gestropeliculas.model.Usuario;
 import es.dam1.gestropeliculas.model.UsuarioContenido;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -27,7 +32,6 @@ public class pantallaListaPeliculasController {
     @FXML private TableColumn<Pelicula, Double> colDuracion;
 
     @FXML private Button btnAtras;
-    @FXML private Button btnEliminar;
     @FXML private Button btnAnadir;
     @FXML private Button btnModificar;
     @FXML private Button btnAnadirMiLista;
@@ -54,20 +58,7 @@ public class pantallaListaPeliculasController {
         Utils.abrirNuevaVentana("/es/dam1/gestropeliculas/view/pantallaPrincipal.fxml", "Menú Principal");
     }
 
-    @FXML
-    private void accionEliminar() {
-        Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
-        if (seleccionada != null) {
-            if (PeliculaDAO.deletePelicula(seleccionada.getID())) {
-                tablaPeliculas.getItems().remove(seleccionada);
-                mostrarAlerta("Éxito", "Película eliminada correctamente.", Alert.AlertType.INFORMATION);
-            } else {
-                mostrarAlerta("Error", "No se pudo eliminar la película.", Alert.AlertType.ERROR);
-            }
-        } else {
-            mostrarAlerta("Aviso", "Selecciona una película primero.", Alert.AlertType.WARNING);
-        }
-    }
+
 
     @FXML
     private void accionAnadir() throws IOException {
@@ -78,12 +69,33 @@ public class pantallaListaPeliculasController {
     private void accionModificar() {
         Pelicula seleccionada = tablaPeliculas.getSelectionModel().getSelectedItem();
         if (seleccionada != null) {
-            // Utils.abrirNuevaVentanaConDatos("/es/dam1/gestropeliculas/view/pantallaPeliculasModificar.fxml", "Modificar Película", seleccionada);
-            mostrarAlerta("Info", "Aquí abrirías la ventana para modificar la película.", Alert.AlertType.INFORMATION);
+            try {
+                // Cargar el FXML de la ventana de añadir/modificar películas
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/es/dam1/gestropeliculas/view/pantallaPeliculasAñadir.fxml"));
+                Parent root = loader.load();
+
+                // Obtener el controlador y pasarle la película seleccionada
+                pantallaPeliculasAñadirController controller = loader.getController();
+                controller.cargarDatosPelicula(seleccionada); // Este método lo tienes que crear (te lo paso abajo)
+
+                // Abrir la ventana en modo modal
+                Stage stage = new Stage();
+                stage.setTitle("Modificar Película");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+
+                // Refrescar la tabla por si hubo cambios
+                recargarTabla();
+            } catch (IOException e) {
+                e.printStackTrace();
+                mostrarAlerta("Error", "No se pudo abrir la ventana de modificación.", Alert.AlertType.ERROR);
+            }
         } else {
             mostrarAlerta("Aviso", "Selecciona una película primero.", Alert.AlertType.WARNING);
         }
     }
+
 
     /**
      * Acción para añadir la película seleccionada a la lista del usuario actual.
